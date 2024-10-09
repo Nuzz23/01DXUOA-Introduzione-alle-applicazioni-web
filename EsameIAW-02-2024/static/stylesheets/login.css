@@ -1,0 +1,37 @@
+/*Contenuto della pagina*/
+#contenuto{
+    background-color: #e2e2e2;
+    display: grid;
+    grid-template-columns: 1fr 13fr 1fr; /*Centro la struttura*/
+    grid-template-rows: 4fr 3fr; /*Serve per fare si che tutto lo sfondo sia uniformemente colorato*/
+}
+
+/*Aggiungo uno spazio e modifico il colore di sfondo*/
+.spazia{
+    margin-top:9vw;
+    grid-column: 2;
+    grid-row:1;
+    border-width: 0.1vw;
+    border-style: solid;
+    border-color:black;
+    background-color: white;
+}
+/*Gestione interna del login*/
+    .log-user-body{
+        margin-right:1.5vw;
+        margin-left:1.5vw;
+        margin-top:1.5vw;
+    }
+
+    .modal-footer{
+        margin-bottom:1vw;
+    }
+
+    .btn{
+        margin-left:0.5vw;
+        margin-right:0.5vw;
+    }
+
+    .form-check{
+        margin-bottom:1vw;
+    }

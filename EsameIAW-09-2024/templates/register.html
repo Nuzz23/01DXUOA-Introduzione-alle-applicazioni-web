@@ -1,0 +1,72 @@
+{% extends "header_nav.html" %}
+
+
+{% block title %}
+Registrazione
+{% endblock %}
+
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Registrati nella palestra fitGyms" />
+    <meta name="author" content="Martina" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cssFiles/register.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto">
+    <main>
+          <form action="{{ url_for('register_success') }}" method="POST" id="nuovo_utente" enctype="multipart/form-data">
+              <h3>Nuovo Utente</h3>
+              <h6><em>Compila ogni campo correttamente per la registrazione</em></h6>
+              <section class="form-area border-0">
+                  <div class="input-group has-validation">
+                        <div class="form-floating {% if errore == 2 %}is-invalid{% endif %}">
+                            <div class="mb-3">
+                                <label for="EMAIL" class="form-label">Email</label>
+                                <input class="form-control form-control-sm {% if errore == 2 %}is-invalid{% endif %}"
+                                       type="email" id="EMAIL" name="EMAIL" minlength="8" maxlength="50"
+                                       placeholder="prova@mail.com" required/>
+                            </div>
+                        </div>
+                        <div class="invalid-feedback">
+                            Campo email non valido o email gi&aacute; in uso
+                        </div>
+                  </div>
+                  <div class="mb-3">
+                      <label for="PASSWORD" class="form-label">Password</label>
+                      <input class="form-control form-control-sm" type="password"
+                             id="PASSWORD" name="PASSWORD" placeholder="password" minlength="8" maxlength="50" required/>
+                  </div>
+                  <!--Inserisco il nome, che non deve essere troppo corto-->
+                  <div class="mb-3">
+                      <label for="NOME" class="form-label">Nome</label>
+                      <input class="form-control form-control-sm"
+                             type="text" id="NOME" name="NOME" minlength="4" maxlength="40" required placeholder="Luca"
+                             pattern="[a-zA-Z ]{4,40}"/>
+                  </div>
+                  <!--Inserisco il cognome, che non deve essere troppo corto-->
+                  <div class="mb-3">
+                      <label for="COGNOME" class="form-label">Cognome</label>
+                      <input class="form-control form-control-sm"
+                             type="text" id="COGNOME" name="COGNOME" minlength="4" maxlength="40" required
+                             placeholder="Rossi" pattern="[a-zA-Z ]{4,40}"/>
+                  </div>
+                  <div class="mb-3">
+                      <label for="RUOLO">Scegli il tuo ruolo: </label>
+                      <select class="form-select" id="RUOLO" name="RUOLO" aria-label="Floating label select">
+                        <option value="0" selected >Cliente</option>
+                        <option value="1">Allenatore</option>
+                      </select>
+                  </div>
+              </section>
+
+              <article class="form-footer">
+                  <button type="submit" class="btn submit btn-success">Registrati</button>
+                  <button type="reset" class="btn reset btn-danger">Cancella</button>
+              </article>
+          </form>
+      </main>
+</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Cliente
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Vista personale allenatore {{ utente['EMAIL'] }}" />
+    <meta name="author" content="Martina">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cssFiles/profiloCliente.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto-pagina">
+    <section class="dati">
+        <h3 class="dati-titolo">I tuoi dati:</h3>
+        <ul class="elenco-dati">
+            <li class="telefono">Nome e cognome: {{ utente['NOME'] }}&nbsp;{{ utente.COGNOME }}</li>
+            <li class="email">La tua email: {{ utente.id }}</li>
+        </ul>
+    </section>
+
+    <section id="personal">
+        {% if cerca %}
+            <form action="{{ url_for('assumi_personal') }}" method="POST" id="assunzione" enctype="multipart/form-data">
+                <h3>Assumi un personal trainer: </h3>
+                <section class="form-area border-0">
+                    <div class="mb-3">
+                        <label for="PERSONA">Scegli il tuo personal trainer: <br>
+                        <em>Formato: Nome Cognome - rating (da 1 a 5 stelle o SV se assente valutazione)</em></label>
+                        <select class="form-select" id="PERSONA" name="PERSONA" aria-label="Floating label select">
+                            {% for pp in personal %}
+                                <option value="{{pp.EMAIL}}"> {{pp.NOME}} {{pp.COGNOME}} -
+                                    {% if pp['RATING'] != -1 %} {{pp['RATING']}}/5 {% else %} SV {% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </section>
+              <article class="form-footer">
+                  <button type="submit" class="btn submit form-buttons btn-success">Assumi</button>
+                  <button type="reset" class="btn reset form-buttons btn-danger">Cancella</button>
+              </article>
+          </form>
+        {% else %}
+            <h3>Personal assegnato: </h3><br>
+            <h5>{{ personal.NOME }} {{personal.COGNOME}}
+                &nbsp;-<em>&nbsp;{{personal.EMAIL}}</em></h5>
+            <br>
+            <h5>Rating: &nbsp;{% if personal['RATING'] != -1 %} {{personal['RATING']}}/5 {% else %} Valutazioni mancanti {% endif %}</h5>
+        {% endif %}
+    </section>
+
+    <section class="scheda">
+        {% if not cerca %}
+            {% if scheda %}
+                <h4>Elenco delle schede create dal tuo personal trainer: </h4>
+                <ul>
+                    {% for item in scheda %}
+                    <li><a href="{{ url_for('visualizza_scheda', val=item) }}">
+                                                Vedi scheda N. {{item+1}}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h4>Il tuo personal trainer non ha ancora creato una scheda per te</h4>
+            {% endif %}
+        {% else %}
+            <h4>Per avere una scheda devi avere un personal trainer assegnato</h4>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

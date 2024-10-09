@@ -1,0 +1,52 @@
+/*GESTISCO IL CONTENUTO PRINCIPALE*/
+    #contenuto{
+        display:grid;
+        grid-template-columns: 1fr 8fr 1fr;
+        grid-template-rows:1fr;
+        background-color: #e2e2e2;
+    }
+
+    .annuncio-body{
+        margin-top:9vw;
+        grid-row: 1;
+        grid-column: 2;
+    }
+
+
+/*STILISTICA DEL FORM*/
+    .form-area{
+        background-color: white;
+        border-color:black;
+        border-style:solid;
+        border-width:0.1vw;
+        margin-bottom:1vw;
+    }
+
+    .spazi-titolo{
+        margin-left:1vw;
+        margin-top:1vw;
+    }
+
+    .field-area{
+        margin: 1vw 1vw 1vw 1vw;
+    }
+
+/*STILISTICA DEI SINGOLI CAMPI DEL FORM*/
+.spaziami{
+    margin-top:1vw;
+}
+
+/*STILISTICA DEL FOOTER/BOTTONI*/
+
+.modal-footer{
+    margin-right:1vw;
+    margin-bottom:1vw;
+}
+
+.btn-danger, .btn-success{
+    margin-right:0.5vw;
+}
+
+.mb-3{
+    z-index: 1;
+}

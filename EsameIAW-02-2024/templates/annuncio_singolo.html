@@ -1,0 +1,225 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Annuncio
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Annuncio di AffittaSI Ragusa" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/annuncio_singolo.css') }}" />
+    <script src="{{ url_for('static', filename='JavaScript/annuncio_singolo.js'|safe) }}" type="text/javascript"></script>
+    <script type="text/javascript">let opzioni = {{ prenotazioni|tojson|safe }};</script>
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto-pagina">
+
+    <!-- visualizzazione del post del sito -->
+    <main id="annuncio">
+        <!-- sezione in cima -->
+        <section class="annuncio-top-info">
+            <h3 class="annuncio-titolo">
+                {{ annuncio["titolo"] }}
+            </h3>
+            <h4 class="annuncio-indirizzo">
+                {{ annuncio["indirizzo"] }}
+            </h4>
+        </section>
+
+        <!--Carosello con le immagini, solo per più immagini-->
+        {% if annuncio['foto']|length > 1 %}
+            <section id="carosello" class="carousel slide carousel-fade">
+            <!--Mini bottoncini carini dentro le foto!-->
+                <article class="carousel-indicators">
+                    {% for i in range(0, annuncio['foto']|length, 1) %}
+                        <button type="button" data-bs-target="#carosello" data-bs-slide-to="{{ i }}"
+                                {% if i==0 %}class="active" {% endif %} aria-current="true" aria-label="Slide {{ i }}">
+                        </button>
+                    {% endfor %}
+                </article>
+            <!--Foto dell'annuncio-->
+                <article class="carousel-inner ">
+                    {% for i in range(0, annuncio['foto']|length, 1) %}
+                        <div class="carousel-item immagini2 {% if i==0 %} active {% endif %}">
+                          <img src="{{ url_for('static', filename=annuncio['foto'][i]) }}" class="d-block w-100 immagini2"
+                               alt="foto dell'annuncio di {{ annuncio['nome_locatore'] }}">
+                        </div>
+                    {% endfor %}
+                </article>
+            <!--Bottoni di navigazione dello stesso-->
+                <button class="carousel-control-prev" type="button" data-bs-target="#carosello" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carosello" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </section>
+        {% else %}
+            <section class="immagini1">
+                <img src="{{ url_for('static', filename=annuncio['foto'][0]) }}" class="immagini1"
+                     alt="foto dell'annuncio di {{ annuncio['nome_locatore'] }}">
+            </section>
+        {% endif %}
+
+        <!-- informazioni del locatore e dell'immobile-->
+        <aside class="annuncio-info">
+            <!-- informazioni del locatore-->
+            <article class="annuncio-locatore">
+                <h5>Pubblicato da: {{ annuncio['nome_locatore'] }} </h5>
+            </article>
+            <!-- informazioni dell'immobile-->
+            <p class="annuncio-prezzo">
+                Il locatore chiede: <b>{{ annuncio['prezzo'] }} &euro; </b> di affitto mensile
+            </p>
+            <article class="annuncio-dati-immobile">
+                Per un/a {{ annuncio['tipo'] }}:
+                <ul>
+                    <li>
+                        Con <b>{{ annuncio['locali'] }} locali</b>
+                    </li>
+                    <li>
+                        {% if annuncio['arredata'] == 1 %}
+                            <b>Arredata</b>
+                        {% else %}
+                            <b>Non arredata</b>
+                        {% endif %}
+                    </li>
+                </ul>
+            </article>
+            <!--Gestisco il pulsante prenotazioni, ovvero quando mostrarlo e quando no-->
+            {% if prenotazioni != 0 and prenotazioni != 1 and prenotazioni != 2 and annuncio['disponibile'] == 1%}
+               <button type="button" class="btn btn-mio prenota-bottone" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                   Prenota una visita
+               </button>
+            {% elif prenotazioni == 0%}
+                <p class="prenota-bottone">Devi essere registrato per prenotare</p>
+            {% elif prenotazioni == 1 %}
+                <p class="prenota-bottone">Non puoi prenotare visite a case da te caricate</p>
+            {% elif prenotazioni == 2 %}
+                <p class="prenota-bottone">Hai già una prenotazione per questa casa</p>
+            {% elif annuncio['disponibile'] == 0 %}
+                <p class="prenota-bottone">Annuncio non prenotabile</p>
+            {% else %}
+                <p class="prenota-bottone">Prenotazioni già riempite, riprova domani</p>
+            {% endif %}
+
+            <!--Se l'utente che ha creato l'annuncio è lo stesso che lo sta visualizzando allorà potrà anche modificarlo da qui-->
+            {% if current_user.is_authenticated %}
+                {% if utente.RUOLO == 1 and utente.id == annuncio['locatore'] %}
+                    <a class="modifica-collegamento" href="{{ url_for('modifica_annuncio', annuncio_id=annuncio['id']) }}">
+                        <img class ="modifica-immagine" src="{{ url_for('static', filename='img/modifica.png') }}" alt="icona della modifica del post">
+                    </a>
+                {% endif %}
+            {% endif %}
+        </aside>
+        <!-- descrizione dell'immobile-->
+        <article class="annuncio-descrizione-holder">
+            <p class="annuncio-descrizione">
+                {{ annuncio['descrizione'] }}
+            </p>
+        </article>
+
+
+    <!-- Modal per la prenotazione -->
+        <section class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <article class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Nuova prenotazione</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </article>
+              <article class="modal-body">
+                  <form action="{{ url_for('nuova_prenotazione') }}" method="POST" id="nuova_prenotazione" enctype="multipart/form-data">
+                      <div class="form-area border-0">
+                          <!--Email del cliente, auto riempita-->
+                          <div class="mb-3">
+                              <label for="email" class="form-label">La tua email</label>
+                              <input type="email" class="form-control" id="email" name="cliente" value="{{ utente.id }}" readonly required/>
+                          </div>
+                          <!--Il cliente può decidere come visitare l'immobile, ho preferito usare una select anziché uno switch in quanto più intuitiva-->
+                          <div class="mb-3">
+                              <label for="tipo" class="form-label">Come intendi visitare l'immobile?</label>
+                              <select class="form-select" aria-label="Modalità di visita" name="tipo" id="tipo" required>
+                                  <option value="0">Voglio visitare l'immobile di persona</option>
+                                  <option value="1">Voglio visitare l'immobile a distanza</option>
+                              </select>
+                          </div>
+                          <!--Inserisci la data della visita, sebbene sia possibile farlo anche tramite una select visti i pochi valori, ho preferito
+                          farlo tramite calendario in quanto più intuitivo e di maggior impatto-->
+                          <div class="mb-3">
+                              <label for="data" class="form-label">La data della visita </label>
+                              <input type="date" id="data" name="data" required min="{{ data_min }}" max="{{ data_max }}"/>
+                          </div>
+                          <!--Faccio scegliere l'orario della visita riferito al giorno della prenotazione-->
+                          <div class="mb-3">
+                              <label for="orario">Scegli l'orario della visita: </label>
+                              <select class="form-select" id="orario" name="orario" aria-label="Floating label select" required>
+                                  <option value="0">9-12</option>
+                                  <option value="1">12-14</option>
+                                  <option value="2">14-17</option>
+                                  <option value="3">17-20</option>
+                              </select>
+                          </div>
+                          <div>
+                              <!-- ottengo l'id dell'annuncio a cui si riferisce la prenotazione-->
+                              <input type="number" id="annuncio_id" name="id_annuncio" readonly value="{{ annuncio['id'] }}" required>
+                          </div>
+                      </div>
+
+                      <div class="form-footer">
+                          <button type="submit" class="btn submit form-buttons btn-success">Carica</button>
+                          <button type="reset" class="btn reset form-buttons btn-danger">Cancella</button>
+                      </div>
+                  </form>
+              </article>
+            </div>
+          </div>
+        </section>
+    </main>
+
+    <!--Mostro i consigliati, a patto che ve ne sia almeno uno da mostrare-->
+    {% if consigli|length != 0 %}
+        <section class="consigliati">
+            <h3>Annunci consigliati: </h3>
+        <div class="consigliati-body">
+            <!--I consigliati sono salvati su delle card mostrate come flex-->
+            {% for consigliato in consigli %}
+                <!--Immagine di copertina dell'annuncio-->
+            <article class="card">
+                <a href="{{ url_for('annuncio', annuncio_id=consigliato['id']) }}">
+                    <img src="{{ url_for('static', filename=consigliato['foto'][0]) }}" class="card-img-top" alt="Copertina di un annuncio consigliato">
+                </a>
+                <!--Corpo dell'annuncio, titolo abbreviato + breve descrizione-->
+                <div class="card-body">
+                    <h5 class="card-title">{{ consigliato['titolo'][0: [consigliato['titolo']|length-2, 20]|min:1] + '...' }}</h5>
+                    <p class="card-text">{{ consigliato['descrizione'][0:25:1] + '...' }}</p>
+                </div>
+                <!--Qualche statistica invitante sull'immobile-->
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item card-list">Prezzo di affitto mensile: <b>{{ consigliato['prezzo']}} &euro;</b></li>
+                    <li class="list-group-item card-list">
+                        {% if consigliato['arredata'] == 1 %}
+                            <b>Arredato</b>
+                        {% else %}
+                            <b>Non arredato</b>
+                        {% endif %}
+                    </li>
+                </ul>
+                <!--Oltre a poter cliccare sulla foto, l'utente può anche cliccare sul pulsante per vedere ulteriori dettagli sull'annuncio-->
+                <div class="card-body">
+                    <a class="btn btn-mio btn-info" href="{{ url_for('annuncio', annuncio_id=consigliato['id']) }}" role="button">
+                        Scopri di pi&uacute;
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

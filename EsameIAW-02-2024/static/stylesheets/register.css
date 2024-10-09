@@ -1,0 +1,66 @@
+/*Definisco il contenuto principale della pagina*/
+#contenuto{
+    align-content: center;
+    display: grid;
+    grid-template-columns: 1fr 12fr 1fr;
+    background-color: #e2e2e2;
+}
+
+/*Spazio il form in maniera tale che sia ben fruibile e gradevole alla vista*/
+.spazia{
+    margin-top:8.5vw;
+    margin-bottom: 1vw;
+    background-color: white;
+    border-width: 0.1vw;
+    border-style: solid;
+    border-color:black;
+    grid-column: 2;
+    grid-row:1;
+}
+
+/*Mi occupo del form in se per se*/
+    .register-user-body{
+        margin: 1.5vw;
+    }
+
+    .modal-footer{
+        margin-bottom:1vw;
+    }
+
+
+    .form-check{
+        margin-bottom:1vw;
+    }
+
+    .testo-iscrizione{
+        margin-top:0.5vw;
+        text-align:center;
+    }
+
+/*Allineo correttamente i bottoni del form*/
+    .form-footer{
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 7fr 1fr 1fr;
+    }
+
+    .submit{
+        grid-row:1;
+        grid-column: 2;
+    }
+
+    .reset{
+        grid-row:1;
+        grid-column: 3;
+    }
+
+    .form-buttons{
+        margin-left:0.5vw;
+        margin-right:0.5vw;
+        margin-top:2vw;
+    }
+
+/*Evito del clipping*/
+.mb-3{
+    z-index: 1;
+}

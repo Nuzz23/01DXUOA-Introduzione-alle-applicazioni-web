@@ -1,0 +1,352 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Profilo Locatore
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Profilo di {{ utente['NOME'] }} di AffittaSI Ragusa versione locatore" />
+    <meta name="author" content="Nunzio">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/profilo_locatore.css') }}" />
+    <script type="text/javascript">
+        // Passo il valore di pendenti da Jinja2 a JavaScript
+        let pendenti = {{ pendenti }};
+    </script>
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto-pagina">
+
+    <!--Mostro i dati del locatore-->
+    <section class="dati">
+        <h3 class="dati-titolo">I tuoi dati:</h3>
+        <ul class="elenco-dati">
+            <li class="email">La tua email: {{ utente.id }}</li>
+            <li class="telefono">Il tuo cellulare: {{ utente['TELEFONO'][0:3:1] + ' ' + utente['TELEFONO'][3::1] }}</li>
+        </ul>
+    </section>
+
+    <!--Apertura dei modali delle richieste attive e dello storico delle richieste al locatore-->
+    <section class="richieste">
+        <h3>Richieste di visita</h3>
+        <button type="button" class="btn btn-mio btn-info" id='visualizza_pendenti' data-bs-toggle="modal" data-bs-target="#Modal_scelta_richieste">
+            Pendenti
+        </button>
+        <button type="button" class="btn btn-mio btn-info" data-bs-toggle="modal" data-bs-target="#Modal_storico_richieste">
+            Storico
+        </button>
+    </section>
+
+    <!--Apertura del modale dello storico delle richieste del locatore-->
+    <section class="visite">
+        <h3>Le tue prenotazioni</h3>
+        <button type="button" class="btn btn-mio btn-info" data-bs-toggle="modal" data-bs-target="#Modal_storico_prenotazioni">
+            Storico
+        </button>
+    </section>
+
+    <!--Modale per gestire le richieste pendenti-->
+    <section class="modal fade" id="Modal_scelta_richieste" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <article class="modal-header intestazione-modale-1">
+                    <!--Intestazione dello stesso con statistiche e cambio modale-->
+                    <h1 class="modal-title fs-5" id="Scelta_richieste_label">{{ pendenti }} richieste in attesa di risposta</h1>
+                    <button type="button" class="btn-close chiudi-modale1" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="cambio-modale">
+                        <h6>Vuoi vedere invece lo storico delle richieste? </h6>
+                        <button class="btn btn-mio btn-info cambio-form" data-bs-dismiss="#Modal_scelta_richieste" data-bs-target="#Modal_storico_richieste" data-bs-toggle="modal">Storico</button>
+                    </div>
+                </article>
+                <!--Form a lunghezza variabile per la gestione delle richieste-->
+                <form action="{{ url_for('scelta_prenotazioni') }}" method="POST" id="gestisci_prenotazioni" enctype="multipart/form-data">
+                    <article class="modal-body">
+                        <!--Genero una richiesta per prenotazione-->
+                        {% for i in range(visite|length) %}
+                            {% if visite[i]['stato'] == 0 %}
+                                <!--Singola visita-->
+                                <article class="visita-pendente" id="visita-{{ i }}">
+                                    <!--Descrizione della singola visita-->
+                                    <p class="visita-descrizione">
+                                        Cliente: <b>{{ visite[i]['cliente_nome'] }}</b>
+                                        <br>Richiede una visita il <b>{{ visite[i].data }}</b> nella fascia oraria <b>{{ visite[i]['orario'] }}</b>
+                                        <br>Annuncio: {{ visite[i]['titolo'] }}
+                                        <br>Indirizzo: {{ visite[i]['indirizzo'] }}
+                                        <br> La visita &eacute; richiesta
+                                        {% if visite[i]['tipo'] == 0 %}
+                                            in <b>presenza</b>
+                                        {% else %}
+                                            a <b>distanza</b>
+                                        {% endif %}
+                                    </p>
+                                    <!--Scelta della singola prenotazione: accetta/rifiuta/posponi-->
+                                    <article class="scelta-bottoni">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="scelta-{{ i }}" id="scelta-positiva-{{ i }}" value="1" required>
+                                            <label class="form-check-label accetta" for="scelta-positiva-{{ i }}" id="scelta-positiva-label-{{ i }}">Accetta</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="scelta-{{ i }}" id="posponi-{{ i }}" value="0" checked required>
+                                            <label class="form-check-label bold" for="posponi-{{ i }}" id="posponi-label-{{ i }}">Posponi</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="scelta-{{ i }}" id="scelta-negativa-{{ i }}" value="-1" required>
+                                            <label class="form-check-label rifiuta" for="scelta-negativa-{{ i }}" id="scelta-negativa-label-{{ i }}">Rifiuta</label>
+                                        </div>
+                                    </article>
+                                    <!--Campo motivazione, solo per prenotazione rifiutata-->
+                                    <div id="motivazione-{{ i }}" class="motivo-contenuto">
+                                            <label for="motivo-{{ i }}" class="rifiuto-motivo">Motivo del rifiuto:</label><br>
+                                            <textarea id="motivo-{{ i }}" name="motivo-{{ i }}" placeholder="Inserisci qui il motivo (almeno 6 caratteri)" minlength="6" maxlength="100" rows="2"></textarea>
+                                    </div>
+                                    <!--Per ogni prenotazione prendo il cliente che l'ha fatta, la data a cui si riferisce e l'id dell'annuncio a cui si riferisce, oltre che al progressivo-->
+                                    <input type="text" class='nascondimi' name="cliente-{{ i }}" value="{{ visite[i]['cliente'] }}" readonly required/>
+                                    <input type="text" class='nascondimi' name="data-{{ i }}" value="{{ visite[i]['data'] }}" readonly required/>
+                                    <input type="text" class='nascondimi' name="annuncio-{{ i }}" value="{{ visite[i]['id_annuncio'] }}" readonly required/>
+                                </article>
+                            {% endif %}
+                        {% endfor %}
+                        {% if pendenti == 0 %}
+                            Nessuna richiesta in sospeso
+                        {% endif %}
+                    </article>
+                    <!--Prendo l'id corrente del locatore-->
+                    <input type="text" class='nascondimi' name="id_utente" value="{{ utente.id }}" readonly required/>
+                    <article class="modal-footer">
+                        <button type="submit" class="btn btn-success">Conferma</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annulla</button>
+                    </article>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    <!--Storico con tutte le richieste ricevute dal locatore-->
+    <section class="modal fade" id="Modal_storico_richieste" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              <!--Intestazione del modale con titolo, alcune statistiche personalizzate e il passaggio al form prenotazioni attive-->
+                  <article class="modal-header intestazione-modale-2">
+                      <button type="button" class="btn-close chiudi-modale2" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <h1 class="modal-title fs-5" id="Storico_richieste_label">Tutte le richieste:</h1>
+                      <h6>Vuoi modificare le richieste pendenti?</h6>
+                      <button class="btn btn-mio btn-info pendenti" data-bs-target="#Modal_scelta_richieste" data-bs-toggle="modal">Richieste Pendenti</button>
+                      <div class="statistiche-visite">
+                          <h6 class="accetta">{{ accettate }} Accettate</h6>
+                          <h6>{{ pendenti }} Non deciso</h6>
+                          <h6 class="rifiuta">{{ rifiutate }} Rifiutate</h6>
+                      </div>
+                  </article>
+              <!--Tutte le prenotazioni-->
+                  <article class="modal-body">
+                      {% for visita in visite %}
+                          <!--Singola prenotazione-->
+                          <article class="visita-pendente">
+                              <!--Descrizione dei campi utili della prenotazione-->
+                              <p class="visita-descrizione">
+                                  Cliente: <b>{{ visita['cliente_nome'] }}</b>
+                                  <br>Specifiche Visita: &nbsp;&nbsp;Data: <b>{{ visita.data }}</b> &nbsp;&nbsp;Fascia oraria: <b>{{ visita['orario'] }}</b>
+                                  <br>Annuncio: {{ visita['titolo'] }}
+                                  <br>Indirizzo: {{ visita['indirizzo'] }}
+                                  <br> Modalit&aacute; della visita:
+                                  <!--Gestione dello stato variabile della prenotazione-->
+                                  {% if visita['tipo'] == 0 %}
+                                      in <b>presenza</b>
+                                  {% else %}
+                                      a <b>distanza</b>
+                                  {% endif %}
+                                  <br>Stato della visita:
+                                  {% if visita['stato'] == 1%}
+                                      <b class="accetta">Accettata</b>
+                                  {% elif visita['stato'] == 0 %}
+                                      <b>Non deciso</b>
+                                  {% else %}
+                                      <b class="rifiuta">Rifiutata</b>
+                                      <br>Con la seguente motivazione: "{{ visita['motivo'] }}"
+                                  {% endif %}
+                              </p>
+                          </article>
+                      {% endfor %}
+                      {% if pendenti == 0 and accettate == 0 and rifiutate == 0%}
+                            Nessuna richiesta mai effettuata
+                      {% endif %}
+                  </article>
+                  <div class="modal-footer">
+                  </div>
+              </div>
+          </div>
+    </section>
+
+    <!--Storico di tutte le prenotazioni effettuate dal locatore-->
+    <section class="modal fade" id="Modal_storico_prenotazioni" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              <!--Intestazione del modale: titolo + dati statistici -->
+                  <article class="modal-header intestazione-modale-2">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <h1 class="modal-title fs-5" id="Storico_richieste_label">Tutte le richieste:</h1>
+                      <div class="statistiche-visite">
+                          <h6 class="accetta">{{ accettate2 }} Accettate</h6>
+                          <h6>{{ pendenti2 }} Non deciso</h6>
+                          <h6 class="rifiuta">{{ rifiutate2 }} Rifiutate</h6>
+                      </div>
+                  </article>
+              <!--Contenuto principale del modale-->
+                  <article class="modal-body">
+                      {% for visita in visite2 %}
+                          <!--Singola visita-->
+                          <article class="visita-pendente">
+                          <!--Dati della singola visita-->
+                              <p class="visita-descrizione">
+                                  Cliente: <b>{{ visita['nome_locatore'] }}</b>
+                                  <br>Specifiche Visita: &nbsp;&nbsp;Data: <b>{{ visita.data }}</b> &nbsp;&nbsp;Fascia oraria: <b>{{ visita['orario'] }}</b>
+                                  <br>Annuncio: {{ visita['titolo'] }}
+                                  <br>Indirizzo: {{ visita['indirizzo'] }}
+                                  <br> Modalit&aacute; della visita:
+                              <!--Comunicazione dell'esito variabile della prenotazione-->
+                                  {% if visita['tipo'] == 0 %}
+                                      in <b>presenza</b>
+                                  {% else %}
+                                      a <b>distanza</b>
+                                  {% endif %}
+                                  <br>Stato della visita :
+                                  {% if visita['stato'] == 1%}
+                                      <b class="accetta">Accettata</b>
+                                  {% elif visita['stato'] == 0 %}
+                                      <b>Non deciso</b>
+                                  {% else %}
+                                      <b class="rifiuta">Rifiutata</b>
+                                      <br>Con la seguente motivazione: "{{ visita['motivo'] }}"
+                                  {% endif %}
+                              </p>
+                          </article>
+                      {% endfor %}
+                  <!--Mostra altro se non hai mai fatto una prenotazione-->
+                      {% if pendenti == 0 and accettate == 0 and rifiutate == 0%}
+                            Nessuna richiesta mai ricevuta
+                      {% endif %}
+                  </article>
+                  <div class="modal-footer">
+                  </div>
+              </div>
+          </div>
+    </section>
+
+    <!--Tutti gli annunci pubblicati dal dato locatore-->
+    <main class="annunci-info">
+    <!--Statistica sugli stessi annunci, differenziata in base al singolare plurale e i filtri attivi-->
+        {% if filtro == 1%}
+            {% if pubblici != 1 and privati != 1%}
+                <h3 class="statistiche">Hai {{ pubblici }} annunci disponibili e {{ privati }} annunci non disponibili </h3>
+            {% elif pubblici == 1 and privati != 1 %}
+                <h3 class="statistiche">Hai {{ pubblici }} annuncio disponibile e {{ privati }} annunci non disponibili </h3>
+            {% elif pubblici != 1 and privati == 1 %}
+                <h3 class="statistiche">Hai {{ pubblici }} annunci disponibili e {{ privati }} annuncio non disponibile </h3>
+            {% else%}
+                <h3 class="statistiche">Hai {{ pubblici }} annuncio disponibile e {{ privati }} annuncio non disponibile </h3>
+            {% endif %}
+        {% elif filtro == 2%}
+            {% if pubblici != 1 %}
+                <h3 class="statistiche">Hai {{ pubblici }} annunci disponibili </h3>
+            {% else%}
+                <h3 class="statistiche">Hai {{ pubblici }} annuncio disponibile </h3>
+            {% endif %}
+        {% else %}
+            {% if privati != 1 %}
+                <h3 class="statistiche">Hai {{ privati }} annunci non disponibili </h3>
+            {% else%}
+                <h3 class="statistiche">Hai {{ privati }} annuncio non disponibile </h3>
+            {% endif %}
+        {% endif %}
+    <!--Opzioni di filtraggio-->
+        <aside class="filters">
+           <h4 class="filters-title">Filtri  </h4>
+            <nav>
+                <div class="card filters-list">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a class="btn btn-mio btn-info filters-1" href="{{ url_for('profilo_locatore', username=current_user.NOME, filtro=1) }}" role="button"> Tutti gli annunci
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a class="btn btn-mio btn-info filters-1" href="{{ url_for('profilo_locatore', username=current_user.NOME, filtro=2) }}" role="button"> Disponibili
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a class="btn btn-mio btn-info filters-1" href="{{ url_for('profilo_locatore', username=current_user.NOME, filtro=3) }}" role="button"> Non disponibili
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!--Elenco dei vari annunci-->
+        <section class="annunci-elenco">
+            {% for annuncio in annunci %}
+            <!--Annuncio singolo-->
+                <article class = "annunci">
+                    <div class="spaziami">
+                    <!--Tramite la foto dello stesso posso essere reindirizzato all'annuncio-->
+                        <a class="collegamento-annuncio" href="{{ url_for('annuncio', annuncio_id=annuncio['id']) }}">
+                            <img class ="image-big1" src="{{ url_for('static', filename=annuncio['foto'][0]) }}" alt="icona della foto dell'annuncio mostrato">
+                        </a>
+                    <!--Dati utili dell'annuncio-->
+                        <h5 class="titolo-annuncio">
+                            {{ annuncio['titolo'] }}
+                        </h5>
+                    <!--Feedback visivo sullo stato dell'annuncio: pubblico o privato-->
+                        {% if annuncio['disponibile'] == 1 %}
+                                <img class="status" src="{{ url_for('static', filename='img/stato_richiesta/accettata.jpg') }}" alt="Icona annuncio pubblico ">
+                        {% else %}
+                                <img class="status" src="{{ url_for('static', filename='img/stato_richiesta/rifiutata.jpg') }}" alt="Icona annuncio privato">
+                        {% endif %}
+                    <!--Indirizzo dell'immobile-->
+                        <img class ="image-big2" src="{{ url_for('static', filename="img/cartina.gif") }}" alt="icona della cartina della provincia di Ragusa">
+                        <h5 class="indirizzo">
+                            {{ annuncio['indirizzo'] }}
+                        </h5>
+                    <!--Statistiche dell'immobile-->
+                        <p class = "specifiche">
+                            Richiedi <b>{{ annuncio['prezzo'] }} &euro;</b> per un(a) <b>{{ annuncio['tipo'] }}</b> con queste caratteristiche:
+                        </p>
+                        <ul class="lista-opzioni">
+                            <li>
+                                {% if annuncio['arredata'] == 1 %}
+                                    <b>Arredato</b>
+                                {% else %}
+                                    <b>Non arredato</b>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if annuncio['locali'] == 6 %}
+                                    Con <b>5+ Locali</b>
+                                {% elif annuncio['locali'] == 1 %}
+                                    Con <b>1 Locale</b>
+                                {% else %}
+                                    Con <b>{{ annuncio['locali'] }} Locali</b>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    <!--Collegamento alla modifica del post-->
+                        <a class="modifica-collegamento" href="{{ url_for('modifica_annuncio', annuncio_id=annuncio['id']) }}">
+                            <img class ="modifica-immagine" src="{{ url_for('static', filename='img/modifica.png') }}" alt="icona della modifica del post">
+                        </a>
+                    </div>
+                </article>
+            {% else %}
+                {% if filtro == 1 %}
+                    <p>Ancora non hai inserito nessun annuncio </p>
+                {% else %}
+                    <p>Ancora non hai inserito nessun annuncio di questa tipologia</p>
+                {% endif %}
+                <a href="{{ url_for('nuovo_annuncio') }}"> Rimedia Subito</a>
+            {% endfor %}
+        </section>
+    </main>
+    <script src="{{ url_for('static', filename='JavaScript/profilo_locatore.js'|safe) }}" type="text/javascript"></script>
+</div>
+{% endblock %}

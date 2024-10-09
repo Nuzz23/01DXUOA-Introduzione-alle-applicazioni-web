@@ -1,0 +1,17 @@
+#pagina{
+    display: grid;
+    grid-template-columns: 1fr 8fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+
+.form-holder{
+    margin-top:10vw;
+    grid-column: 2;
+    grid-row: 1;
+    border: 0.1vw black solid;
+}
+
+form{
+    margin:1vw;
+}

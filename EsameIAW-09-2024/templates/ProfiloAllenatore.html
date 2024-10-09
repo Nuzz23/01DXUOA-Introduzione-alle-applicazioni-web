@@ -1,0 +1,196 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Allenatore
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Vista personale allenatore {{ utente['EMAIL'] }}" />
+    <meta name="author" content="Martina">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cssFiles/ProfiloAllenatore.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto-pagina">
+    <section class="dati">
+        <h3 class="dati-titolo">I tuoi dati:</h3>
+        <ul class="elenco-dati">
+            <li>Nome e cognome: {{ utente['NOME'] }}&nbsp;{{ utente.COGNOME }}</li>
+            <li>La tua email: {{ utente.id }}</li>
+            <li>Il tuo ranking: {% if ranking != -1 %} {{ranking}}/5 {% else %} Non hai valutazioni {% endif %}</li>
+        </ul>
+    </section>
+
+    <!--Apre il modale contenente il form per creare un nuovo esercizio o per una nuova scheda-->
+    <section class="new-bottone">
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#New-Esercizio">
+            Nuovo esercizio
+        </button>
+        <br>
+        {% if clienti|length > 0 and abbastanza_esercizi%}
+            <a class="btn btn-info new-scheda" href="{{ url_for('nuova_scheda') }}" role="button">Nuova scheda</a>
+        {% elif clienti|length > 0 %}
+            Non ci sono abbastanza esercizi per fare una nuova scheda (almeno 2)
+        {% else %}
+            Non puoi creare una scheda senza clienti
+        {% endif %}
+    </section>
+
+    <section class="modal fade" id="New-Esercizio" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              <!--Contenuto principale del modale-->
+                  <article class="modal-body">
+                    <form action="{{ url_for('nuovo_esercizio') }}" method="POST" id="nuovo_esercizio" enctype="multipart/form-data">
+                        <h3>Nuovo Esercizio</h3>
+                        <section class="form-area border-0">
+                            <div class="input-group has-validation mb-3">
+                                <div class="form-floating {% if errore == '10' or errore == '11' %}is-invalid{% endif %}">
+                                    <div class="mb-3">
+                                        <label for="TITOLO" class="form-label">Titolo</label>
+                                        <input class="form-control form-control-sm {% if errore == '10' or errore == '11' %}is-invalid{% endif %}"
+                                               type="text" id="TITOLO" name="TITOLO" minlength="5" maxlength="50"
+                                               placeholder="Sollevamento pesi" required pattern="[0-9a-zA-Z _]{5,50}"/>
+                                    </div>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Titolo non valido
+                                </div>
+                            </div>
+                            <div class="input-group has-validation mb-3">
+                                <div class="form-floating {% if errore == '01' or errore == '11' %}is-invalid{% endif %}">
+                                    <div class="mb-3">
+                                        <label for="DESC" class="form-label">Descrizione</label>
+                                        <textarea rows="3" class="form-control form-control-sm {% if errore == '01' or errore == '11'%}is-invalid{% endif %}" type="text"
+                                               id="DESC" name="DESC" placeholder="Alza i pesi al petto" minlength="8" maxlength="200" required></textarea>
+                                    </div>
+                                </div>
+                              <div class="invalid-feedback">
+                                    Descrizione non valida
+                              </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="DIFF">Difficolt&agrave; </label>
+                                <select class="form-select" id="DIFF" name="DIFF" aria-label="Floating label select">
+                                    <option value="0" selected >Facile</option>
+                                    <option value="1">Medio</option>
+                                    <option value="2">Difficile</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="VIS">Visibilit&agrave; </label>
+                                <select class="form-select" id="VIS" name="VIS" aria-label="Floating label select">
+                                    <option value="0">Solo tu (privato)</option>
+                                    <option value="1" selected >Tutti (pubblico)</option>
+                                </select>
+                            </div>
+                        </section>
+                        <article class="form-footer">
+                            <button type="submit" class="btn submit form-buttons btn-success">Conferma</button>
+                            <button type="reset" class="btn reset form-buttons btn-danger">Cancella</button>
+                        </article>
+                    </form>
+                  </article>
+              </div>
+          </div>
+    </section>
+
+<!--Apre il modale contenente il form per creare un nuovo esercizio-->
+    <section class="Clienti-bottone">
+        <h3>I tuoi clienti</h3>
+        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#Clienti">
+            Visualizza
+        </button>
+    </section>
+
+    <section class="modal fade" id="Clienti" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              <!--Contenuto principale del modale-->
+                  <article class="modal-body">
+                      {% if clienti %}
+                      <h4>Hai {{clienti|length}} cliente/i</h4>
+                        {% for cliente in clienti %}
+                            {{cliente['NOME']}}
+                            <ul>
+                                {% if cliente['EMAIL'] in scheda %}
+                                    {% for elem in scheda[cliente['EMAIL']] %}
+                                        <li>
+                                            <a href="{{ url_for('visualizza_scheda', val=elem) }}">
+                                                Vedi scheda N. {{elem+1}}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>Questo cliente non ha schede</li>
+                                {% endif %}
+                            </ul>
+                        {% endfor %}
+                      {% else %}
+                        <h4>Non hai ancora nessun cliente</h4>
+                      {% endif %}
+                  </article>
+              </div>
+          </div>
+    </section>
+
+    <main class="esercizi">
+        <h3>Elenco degli esercizi pubblici/privati da te creati: </h3>
+        <section class="pubblici">
+            <h4>Pubblici</h4>
+            {% for esercizio in esercizi %}
+                {% if esercizio.VIS %}
+                <article class="esercizio">
+                    <h3 class="titolo">{{esercizio.TITOLO}}</h3>
+                    {% if esercizio.DIFF == 0 %}
+                        <h4 class="diff facile">Facile</h4>
+                    {% else %}
+                        {% if esercizio.DIFF == 1 %}
+                            <h4 class="diff medio">Medio</h4>
+                        {% else %}
+                            <h4 class="diff difficile">Difficile</h4>
+                        {% endif %}
+                    {% endif %}
+                    <a class="btn btn-primary btn-sm mod" href="{{ url_for('modifica_esercizio', data=esercizio.ID+'-00') }}"
+                       role="button">Modifica</a>
+                    <a class="btn btn-primary btn-sm elim btn-danger" href="{{ url_for('elimina_esercizio', val=esercizio.ID) }}"
+                       role="button">Elimina</a>
+                    <p class="desc">{{esercizio.DESC}}</p>
+                </article>
+                {% endif %}
+            {% else %}
+                <h4>Nessun esercizio pubblico creato</h4>
+            {% endfor %}
+        </section>
+        <section class="privati">
+            <h4>Privati</h4>
+            {% for esercizio in esercizi %}
+                {% if not esercizio.VIS %}
+                <article class="esercizio">
+                    <h3 class="titolo">{{esercizio.TITOLO}}</h3>
+                    {% if esercizio.DIFF == 0 %}
+                        <h4 class="diff facile">Facile</h4>
+                    {% else %}
+                        {% if esercizio.DIFF == 1 %}
+                            <h4 class="diff medio">Medio</h4>
+                        {% else %}
+                            <h4 class="diff difficile">Difficile</h4>
+                        {% endif %}
+                    {% endif %}
+                    <a class="btn btn-primary btn-sm mod" href="{{ url_for('modifica_esercizio', data=esercizio.ID+'-00') }}"
+                       role="button">Modifica</a>
+                    <a class="btn btn-primary btn-sm elim btn-danger" href="{{ url_for('elimina_esercizio', val=esercizio.ID) }}"
+                       role="button">Elimina</a>
+                    <p class="desc">{{esercizio.DESC}}</p>
+                </article>
+                {% endif %}
+            {% else %}
+                <h4>Nessun esercizio privato creato</h4>
+            {% endfor %}
+        </section>
+    </main>
+
+</div>
+{% endblock %}

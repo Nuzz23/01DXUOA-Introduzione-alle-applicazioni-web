@@ -1,0 +1,254 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+ Nuovo Annuncio
+{% endblock %}
+
+{% block nome_utente %}
+    {{ current_user['NOME'] }}
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Pagina per la creazione di un nuovo Annuncio (solo locatori)" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/nuovo_annuncio.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto">
+     <!--Gestisco il body della pagina, dando una corretta spaziatura-->
+      <main class="annuncio-body">
+          <form action="{{ url_for('nuovo_annuncio_successo') }}" method="POST" id="nuovo_annuncio" enctype="multipart/form-data">
+              <section class="form-area">
+              <!--Intestazione del form-->
+                  <div class="form-head">
+                      <h3>Nuovo locale da affittare</h3>
+                      <h6><em>Ogni campo qui presente deve essere obbligatoriamente compilato correttamente affinch&eacute; l'annuncio sia caricato</em></h6>
+                  </div>
+                  <section class="field-area">
+                    <!--Prendo la mail dell'utente che crea l'annuncio, la prendo direttamente senza farla inserire a lui-->
+                      <article class="mb-3">
+                          <label for="email" class="form-label">Email del locatore</label>
+                          <input type="email" class="form-control" id="email" name="email" value="{{ utente.id }}" readonly required/>
+                      </article>
+                  <!--Input del titolo dell'annuncio con validazione dei dati-->
+                      <div class="input-group has-validation mb-3">
+                          <div class="form-floating {% if errori['titolo'] == 1 %}is-invalid{% endif %}">
+                              <div class="mb-3">
+                                  <label for="titolo" class="form-label">Titolo dell'annuncio</label>
+                                  <input type="text" class="form-control {% if errori['titolo'] == 1 %}is-invalid{% endif %}"
+                                       id="titolo" name="titolo" placeholder="inserisci qui un titolo breve per l'annuncio"
+                                       required minlength="10" maxlength="70"
+                                       {% if errori['titolo'] == 0 %}value="{{ dati['titolo'] }}"{% endif %}/>
+                              </div>
+                          </div>
+                          <div class="invalid-feedback">
+                              Titolo non formattato correttamente
+                          </div>
+                      </div>
+                      <!--Campi di indirizzo dell'immobile: Tipo di strada: opzioni previste: via, viale, corso, piazza, contrada, altro-->
+                      <section class="address-data">
+                          <article class="mb-3 radios">
+                              <p>Tipo di strada</p>
+                              <article class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="tipo_strada" id="via" value="Via" required
+                                         {% if errori['tipo_strada'] == 0 %}
+                                            {% if dati['tipo_strada']|lower == 'via'%} checked {% endif %}
+                                         {% endif %}/>
+                                  <label class="form-check-label" for="via">Via</label>
+                              </article>
+                              <article class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="tipo_strada" id="viale" value="Viale" required
+                                    {% if errori['tipo_strada'] == 0 %}
+                                            {% if dati['tipo_strada']|lower == 'viale'%} checked {% endif %}
+                                         {% endif %}
+                                  />
+                                  <label class="form-check-label" for="viale">Viale</label>
+                              </article>
+                              <article class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="tipo_strada" id="corso" value="Corso" required
+                                  {% if errori['tipo_strada'] == 0 %}
+                                            {% if dati['tipo_strada']|lower == 'corso'%} checked {% endif %}
+                                         {% endif %}/>
+                                  <label class="form-check-label" for="corso">Corso</label>
+                              </article>
+                              <article class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="tipo_strada" id="piazza" value="Piazza" required
+                                  {% if errori['tipo_strada'] == 0 %}
+                                            {% if dati['tipo_strada']|lower == 'piazza'%} checked {% endif %}
+                                         {% endif %}/>
+                                  <label class="form-check-label" for="piazza">Piazza</label>
+                              </article>
+                              <article class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="tipo_strada" id="contrada" value="Contrada" required
+                                  {% if errori['tipo_strada'] == 0 %}
+                                            {% if dati['tipo_strada']|lower == 'contrada'%} checked {% endif %}
+                                         {% endif %}/>
+                                  <label class="form-check-label" for="contrada">Contrada</label>
+                              </article>
+                              <article class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="tipo_strada" id="altro" value="Altro" required
+                                  {% if errori['tipo_strada'] == 0 %}
+                                            {% if dati['tipo_strada']|lower == 'altro'%} checked {% endif %}
+                                         {% endif %}/>
+                                  <label class="form-check-label" for="altro">Altro (da scrivere in indirizzo)</label>
+                              </article>
+                          </article>
+                      <!--Campi di indirizzo dell'immobile: civico, con opzione di 0 = Senza numero-->
+                          <article class="input-group has-validation mb-3">
+                              <div class="form-floating {% if errori['civico'] == 1 %}is-invalid{% endif %}">
+                                  <div class="mb-3 civ">
+                                      <label for="civico" class="form-label {% if errori['civico'] == 1 %}is-invalid{% endif %}">Civico (0=Senza Numero)</label>
+                                      <input type="text" class="form-control {% if errori['civico'] == 1 %}is-invalid{% endif %}"
+                                             id="civico" name="civico" placeholder="civico"
+                                             required minlength="1" maxlength="9" pattern="^([0-9A-Za-z\\\/|\- _]){1,9}$"
+                                             {% if errori['civico'] == 0 %}value="{{ dati['civico'] }}"{% endif %}/>
+                                  </div>
+                            </div>
+                              <div class="invalid-feedback">
+                                  Civico non corretto
+                              </div>
+                          </article>
+                      </section>
+                      <!--Campi di indirizzo dell'immobile: indirizzo fisico-->
+                      <article class="input-group has-validation mb-3">
+                          <div class="form-floating {% if errori['indirizzo'] == 1 %}is-invalid{% endif %}">
+                              <div class="mb-3">
+                                  <label for="indirizzo" class="form-label">Indirizzo</label>
+                                  <input type="text" class="form-control {% if errori['indirizzo'] == 1 %}is-invalid{% endif %}"
+                                         id="indirizzo" name="indirizzo" placeholder="inserisci qui l'indirizzo" required minlength="3" maxlength="50"
+                                  {% if errori['indirizzo'] == 0 %}value="{{ dati['indirizzo'] }}"{% endif %}/>
+                              </div>
+                          </div>
+                          <div class="invalid-feedback">
+                              Indirizzo non corretto
+                          </div>
+                      </article>
+                  <!--Inserimento del tipo di immobile: loft, villa, casa o appartamento-->
+                      <article class="input-group has-validation mb-3">
+                          <div class="form-floating {% if errori['tipo'] == 1 %}is-invalid{% endif %}">
+                              <div class="mb-3">
+                                  <label for="tipo">Tipo di appartamento: </label>
+                                  <select class="form-select {% if errori['tipo'] == 1 %}is-invalid{% endif %}"
+                                          id="tipo" name="tipo" aria-label="Floating label select">
+                                      <option value="0" {% if errori['tipo'] == 0 %}
+                                                        {% if dati['tipo'] == 0 %} selected  {% endif %}
+                                                        {% endif %}>
+                                        Casa indipendente
+                                      </option>
+                                      <option value="1" {% if errori['tipo'] == 0 %}
+                                                        {% if dati['tipo'] == 1 %} selected  {% endif %}
+                                                        {% endif %}>
+                                          Appartamento
+                                      </option>
+                                      <option value="2" {% if errori['tipo'] == 0 %}
+                                                        {% if dati['tipo'] == 2 %} selected  {% endif %}
+                                                        {% endif %}>
+                                          Loft
+                                      </option>
+                                      <option value="3" {% if errori['tipo'] == 0 %}
+                                                        {% if dati['tipo'] == 3 %} selected  {% endif %}
+                                                        {% endif %}>
+                                          Villa
+                                      </option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="invalid-feedback">
+                              Tipo immobile non corretto
+                          </div>
+                      </article>
+                    <!--Numero di locali, input validi numeri compresi tra 1 e 6, dove 6 quantifica qualsiasi numero di locali maggiori di 5-->
+                      <article class="input-group has-validation mb-3">
+                          <div class="form-floating {% if errori['locali'] == 1 %}is-invalid{% endif %}">
+                              <div class="mb-3 spaziami">
+                                  <label for="locali" class="form-label">Numero di locali
+                                      <br>Valori accettati: da 1=Monolocale sino a 6=Immobile con 5+ locali</label>
+                                  <input type="number" class="form-control {% if errori['locali'] == 1 %}is-invalid{% endif %}"
+                                         id="locali" name="locali" placeholder="numero di locali" min="1" max="6"
+                                         {% if errori['locali'] == 0 %} value ="{{ dati['locali'] }}" {% endif %}
+                                         required pattern="^[1-6]$"/>
+                              </div>
+                          </div>
+                          <div class="invalid-feedback">
+                              Numero di locali non valido
+                          </div>
+                      </article>
+                      <!--Descrizione dell'immobile-->
+                      <article class="input-group has-validation mb-3">
+                          <div class="form-floating {% if errori['descrizione'] == 1 %}is-invalid{% endif %}">
+                              <div class="mb-3">
+                                  <label for="descrizione">Descrizione dell'immobile</label>
+                                  <textarea class="form-control {% if errori['descrizione'] == 1 %}is-invalid{% endif %}"
+                                            placeholder="Descrivi l'immobile" name="descrizione" id="descrizione" rows="3"
+                                            minlength="30" maxlength="700">{% if errori['descrizione'] == 0 %}{{ dati['descrizione'] }}{% endif %}</textarea>
+                              </div>
+                          </div>
+                          <div class="invalid-feedback">
+                                Descrizione non valida
+                          </div>
+                      </article>
+                  <!--Prezzo mensile dell'immobile, ho inserito un valore minimo simbolico pari a 0 euro, solo prezzi interi!-->
+                      <article class="input-group has-validation mb-3">
+                          <div class="form-floating {% if errori['prezzo'] == 1 %}is-invalid{% endif %}">
+                              <div class="mb-3">
+                                  <label for="prezzo" class="form-label">Prezzo mensile di affitto <br>Valori accettati: Si prega di inserire un prezzo arrotondato agli euro</label>
+                                  <input type="number" class="form-control {% if errori['prezzo'] == 1 %}is-invalid{% endif %}" id="prezzo" name="prezzo"
+                                         placeholder="Prezzo dell'immobile in &euro;" min="0" required pattern="^([0-9]){1,}$"
+                                         {% if errori['prezzo'] == 0 %} value="{{ dati['prezzo'] }}"{% endif %}/>
+                              </div>
+                          </div>
+                          <div class="invalid-feedback">
+                                Prezzo non valido
+                          </div>
+                      </article>
+                  <!--Chiedo se l'immobile è arredato o meno-->
+                      <article class="mb-3">
+                          <p>L'immobile &eacute; arredato?</p>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="arredata" id="si" value="True" required
+                              {% if errori['arredata'] == 0 %} {% if dati['arredata'] == 1 %}checked{% endif %} {% endif %}>
+                              <label class="form-check-label" for="si">Si</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="arredata" id="no" value="False" required
+                              {% if errori['arredata'] == 0 %} {% if dati['arredata'] == 0 %}checked{% endif %} {% endif %}>
+                              <label class="form-check-label" for="no">No</label>
+                          </div>
+                      </article>
+                  <!--Inserimento delle foto, da un minimo di 1 a un massimo di 5-->
+                      <article class="mb-3">
+                          <label for="foto" class="form-label">
+                              Inserisci delle foto dell'immobile <br>
+                              Formati accettati: .jpg, .jpeg, .png, .gif, .heif, .gif<br>
+                              Numero di foto accettate: da 1 a 5 foto<br>
+                              <em>Per selezionare pi&uacute; foto puoi fare ctrl+click mouse!</em>
+                          </label>
+                          <input class="form-control" type="file" id="foto" name="foto" multiple required pattern="^([0-9_A-Za-z ,.]){1,}(((\.jpeg)|(\.jpg)|(\.png)|(\.heif)|(\.gif))$)">
+                      </article>
+                  <!--Chiedo che se la casa è subito disponibile o meno-->
+                      <article class="mb-3">
+                          <p>L'immobile &eacute; disponibile da subito?</p>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="disponibile" id="si2" value="True" required
+                              {% if errori['disponibile'] == 0 %} {% if dati['disponibile'] == 1 %}checked{% endif %} {% endif %}>
+                              <label class="form-check-label" for="si2">Si</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="disponibile" id="no2" value="False" required
+                              {% if errori['disponibile'] == 0 %} {% if dati['disponibile'] == 0 %}checked{% endif %} {% endif %}>
+                              <label class="form-check-label" for="no2">No</label>
+                          </div>
+                      </article>
+                  </section>
+                  <article class="modal-footer">
+                      <button type="submit" class="btn submit form-buttons btn-success">Carica</button>
+                      <button type="reset" class="btn reset form-buttons btn-danger">Cancella</button>
+                  </article>
+              </section>
+          </form>
+      </main>
+</div>
+{% endblock %}

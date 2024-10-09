@@ -1,0 +1,69 @@
+{% extends "header_nav.html" %}
+
+
+{% block title %}
+Nuova scheda
+{% endblock %}
+
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="L'allenatore crea una nuova scheda"/>
+    <meta name="author" content="Martina" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cssFiles/modifica_scheda.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto">
+    <main>
+        <form action="{{ url_for('nuova_scheda_success') }}" method="POST" id="nuova_scheda_success" enctype="multipart/form-data">
+              <h3>Nuova Scheda</h3>
+              <h6>Si prega di inserire almeno due esercizi</h6>
+              <section class="form-area border-0">
+                  <div class="mb-3">
+                      <label for="ALLENATORE" class="form-label">Allenatore</label>
+                      <input class="form-control form-control-sm " type="email" id="ALLENATORE" name="ALLENATORE"
+                             minlength="8" maxlength="50" readonly required value="{{allenatore}}"/>
+                  </div>
+                  <div class="mb-3">
+                      <label for="CLIENTE">Seleziona il cliente </label>
+                      <select class="form-select" id="CLIENTE" name="CLIENTE" aria-label="Floating label select">
+                          {% for cliente in clienti %}
+                            <option value="{{cliente['EMAIL']}}"
+                            {% if cliente['EMAIL'] == clienti[0]['EMAIL'] %} selected {% endif %}>
+                            {{cliente['NOME']}}  {{cliente['COGNOME']}}
+                          </option>
+                          {% endfor %}
+                      </select>
+                  </div>
+                  {% for esercizio in esercizi %}
+                  <div class="form-check form-switch singola-scelta">
+                      <input class="form-check-input left" type="checkbox" value="{{esercizio.ID}}"
+                             id="{{esercizio.ID}}" name="{{esercizio.ID}}">
+                      <label class="form-check-label posizione" for="{{esercizio.ID}}">
+                          <article class="esercizio">
+                              <h3 class="titolo">{{esercizio.TITOLO}}</h3>
+                              {% if esercizio.DIFF == 0 %}
+                                <h4 class="diff facile">Facile</h4>
+                              {% elif esercizio.DIFF == 1 %}
+                                <h4 class="diff medio">Medio</h4>
+                              {% else %}
+                                <h4 class="diff difficile">Difficile</h4>
+                              {% endif %}
+                              <p class="desc">{{esercizio.DESC}}</p>
+                          </article>
+                      </label>
+                  </div>
+                      {% endfor %}
+              </section>
+
+              <article class="form-footer">
+                  <button type="submit" class="btn submit btn-success">Conferma</button>
+                  <button type="reset" class="btn reset btn-danger">Cancella</button>
+              </article>
+          </form>
+      </main>
+    </main>
+</div>
+{% endblock %}

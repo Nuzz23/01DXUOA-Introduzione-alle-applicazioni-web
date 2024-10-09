@@ -1,0 +1,125 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Profilo Cliente
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Profilo di {{ utente['NOME'] }} di AffittaSI Ragusa versione cliente" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/profilo_cliente.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto-pagina">
+        <!--Mostro i dati dell'utente-->
+        <section class="dati">
+            <h3 class="dati-titolo">I tuoi dati:</h3>
+            <ul class="elenco-dati">
+                <li class="email">La tua email: {{ utente.id }}</li>
+                <li class="telefono">Il tuo cellulare: {{ utente['TELEFONO'][0:3:1] + ' ' + utente['TELEFONO'][3::1] }}</li>
+            </ul>
+        </section>
+
+    <!--Mostro tutte le richieste di prenotazioni effettuate-->
+    <main class="richieste">
+        <h3 class="titolo-richieste">Le tue richieste:</h3>
+        <!--Mostro alcune statistiche carine per l'utente personalizzate in base al filtro-->
+        {% if filtro == 1 %}
+            <h5 class="statistiche">Numero di richieste accettate: {{ accettate }}
+                <br>Numero di richieste rifiutate: &nbsp;&nbsp;{{ rifiutate }}
+                <br>Numero di richieste pendenti: {{ pendenti }}
+            </h5>
+        {% elif filtro == 2 %}
+                <h5 class="statistiche">Numero di richieste accettate: {{ accettate }}</h5>
+        {% elif filtro == 3 %}
+                <h5 class="statistiche">Numero di richieste rifiutate: {{ rifiutate }}</h5>
+        {% elif filtro == 4 %}
+                <h5 class="statistiche">Numero di richieste pendenti: {{ pendenti }}</h5>
+        {% endif %}
+        <!--Filtri disponibili per la visualizzazione solo di alcune richieste-->
+        <aside class="filters">
+           <h4 class="filters-title">Filtri  </h4>
+            <nav>
+                <div class="card filters-list">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a class="btn btn-mio btn-info filters-1" href="{{ url_for('profilo_cliente', username=current_user.NOME, filtro=1) }}" role="button"> Tutte le prenotazioni
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a class="btn btn-mio btn-info filters-1" href="{{ url_for('profilo_cliente', username=current_user.NOME, filtro=2) }}" role="button"> Confermate
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a class="btn btn-mio btn-info filters-1" href="{{ url_for('profilo_cliente', username=current_user.NOME, filtro=3) }}" role="button"> Rifiutate
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a class="btn btn-mio btn-info filters-1" href="{{ url_for('profilo_cliente', username=current_user.NOME, filtro=4) }}" role="button"> Pendenti
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        <!--Visione di tutte le richieste ricevute-->
+        <section class="visite-elenco">
+        {% for visita in visite %}
+                <article class = "richiesta">
+                    <div class="spaziami">
+                    <!--L'utente può vedere l'annuncio approfondito direttamente tramite l'icona-->
+                        <a class="collegamento-annuncio" href="{{ url_for('annuncio', annuncio_id=visita['id_annuncio']) }}">
+                            <img class ="image-big1" src="{{ url_for('static', filename=visita['foto']) }}" alt="icona dell'annuncio mostrato">
+                        </a>
+                    <!--Dati della prenotazione-->
+                        <h5 class="titolo-annuncio">
+                            {{ visita['titolo'] }}
+                        </h5>
+                    <!--Feedback visivo sullo stato della prenotazione: accettata/in sospeso/rifiutata-->
+                        {% if visita['stato'] == 1 %}
+                                <img class="status" src="{{ url_for('static', filename='img/stato_richiesta/accettata.jpg') }}" alt="Icona immagine richiesta accettata">
+                        {% elif visita['stato'] == 0 %}
+                                <img class="status" src="{{ url_for('static', filename='img/stato_richiesta/dubbio.jpeg') }}" alt="Icona immagine di richiesta non conferma o dubbio">
+                        {% else %}
+                                <img class="status" src="{{ url_for('static', filename='img/stato_richiesta/rifiutata.jpg') }}" alt="Icona immagine richiesta rifiutata">
+                        {% endif %}
+                        <img class ="image-big2" src="{{ url_for('static', filename="img/cartina.gif") }}" alt="icona della cartina della provincia di Ragusa">
+                        <h5 class="indirizzo">
+                            {{ visita['indirizzo'] }}
+                        </h5>
+                        <p class = "titolare">
+                            Pubblicato da: {{ visita['nome'] }}
+                        </p>
+                        <br>
+                        <!--Status della prenotazione-->
+                        <p class="descrizione">
+                            Data prenotazione: <b>{{ visita['data'] }}</b> &nbsp; - &nbsp;
+                            Orario: <b>{{ visita['orario'] }}</b> <br>
+                            {% if visita['tipo'] == 0 %}
+                                La visita &eacute; prenotata in <b>presenza</b>
+                            {% else %}
+                                La visita &eacute; prenotata a <b>distanza</b>
+                            {% endif %}
+                            <br>Stato:
+                            {% if visita['stato'] == 1 %}
+                                <b>Accettata</b>.
+                            {% elif visita['stato'] == 0 %}
+                                <b>Non confermata</b>.
+                            {% else %}
+                                <b>Rifiutata</b>.<br>
+                                Motivazione: {{ visita['motivo'] }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </article>
+            {% else %}
+            <!--Ovetto di pasqua-->
+                <p>Wow, com'&eacute; vuoto qui</p>
+            {% endfor %}
+        </section>
+    </main>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+/*Gestisco la navbar con il logo del sito, nome del sito e pulsanti vari*/
+.bar{
+    z-index: 2; /* Serve per avere la navbar sopra tutto*/
+    position: fixed;
+    display: grid; /*suddivido la navbar in colonne*/
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+    grid-template-rows:1fr;
+    background-color: black;
+    margin-top:3vw;
+}
+
+/*Logo del sito*/
+#site-logo{
+    border-radius: 50%;
+    grid-column: 1;
+    grid-row: 1;
+    width:100px;
+    height: auto;
+    margin-top:3.5vw;
+}
+
+/*Nome del sito*/
+header h1{
+    grid-column: 2;
+    grid-row: 1;
+    color: white;
+    margin-top:3vw;
+}
+
+/*Pulsante di login*/
+.auth{
+    grid-column: 3;
+    grid-row: 1;
+    margin-top:1vw;
+    margin-right:2vw;
+}
+
+
+/*Colore del benvenuto*/
+.benvenuto{
+    margin-top:2vw;
+    color: white;
+}
+
+/*Pulsante di login del mio sito*/
+#not-logged{
+    margin-top:3vw;
+    margin-right:1vw;
+    grid-column: 3;
+    grid-row: 1;
+}
+.logout{
+    grid-column: 3;
+    grid-row: 1;
+    margin-right:3vw;
+    margin-left:2vw;
+}

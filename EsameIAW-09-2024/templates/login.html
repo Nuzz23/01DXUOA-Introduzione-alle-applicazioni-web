@@ -1,0 +1,55 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Pagina di login per la palestra fitGyms" />
+    <meta name="author" content="Martina" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cssFiles/login.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto">
+    <!--Spaziatura-->
+    <main class="spaziatura">
+        <form action="{{ url_for('login_success') }}" method="POST" id="login_utente" enctype="multipart/form-data">
+            <h3>LOGIN UTENTE</h3>
+            <section class="form-area border-0">
+                <div class="input-group has-validation mb-3">
+                    <div class="form-floating {% if errore == 1 %} is-invalid {% endif %}">
+                        <div class="mb-3">
+                            <label for="EMAIL" class="form-label">Email</label>
+                            <input class="form-control form-control-sm {% if errore == 1 %} is-invalid {% endif %}"
+                                   type="email" id="EMAIL" name="EMAIL" minlength="8" maxlength="50" required/>
+                        </div>
+                    </div>
+                    <div class="invalid-feedback">
+                        Email non valida
+                    </div>
+                </div>
+                <div class="input-group has-validation mb-3">
+                    <div class="form-floating {% if errore == 1 %} is-invalid {% endif %}">
+                        <div class="mb-3">
+                          <label for="PASSWORD" class="form-label">Password</label>
+                          <input class="form-control form-control-sm {% if errore == 1 %} is-invalid {% endif %}"
+                                 type="password" id="PASSWORD" name="PASSWORD" minlength="8" maxlength="50" required/>
+                        </div>
+                    </div>
+                    <div class="invalid-feedback">
+                        Password non valida
+                    </div>
+                </div>
+            </section>
+            <h5 class="testo-iscrizione">Non sei iscritto? <a href="{{ url_for('register', errore=0) }}">Diventa Membro</a></h5>
+              <article class="modal-footer">
+                  <button type="submit" class="btn btn-primary submit btn-success">Conferma</button>
+                  <button type="reset" class="btn btn-primary reset btn-danger">Cancella</button>
+              </article>
+          </form>
+    </main>
+</div>
+{% endblock %}

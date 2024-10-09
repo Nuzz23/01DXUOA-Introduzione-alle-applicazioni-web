@@ -1,0 +1,126 @@
+{% extends "header_nav.html" %}
+
+
+{% block title %}
+Registrazione
+{% endblock %}
+
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Registrati al sito di AffittaSi Ragusa" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/register.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto">
+    <!--Come nel login creo il form di registrazione, mi occupo di centrare bene gli spazi degli elementi-->
+    <div class="spazia">
+      <main class="register-user-body">
+          <form action="{{ url_for('register_success') }}" method="POST" id="nuovo_utente" enctype="multipart/form-data">
+              <h3>Nuovo Utente</h3>
+              <h6><em>Ogni campo qui presente deve essere obbligatoriamente compilato correttamente affinch&eacute; ti possa registrare</em></h6>
+              <section class="form-area border-0">
+                <!--Quasi ogni campo del form presenta due stati, uno valido(di default) e uno invalido, per dare un feedback grafico dei campi errati
+                se possibile, rifornisco all'utente i valori precedentemente scritti nei campi (no password o ruolo)-->
+                  <div class="input-group has-validation mb-3">
+                        <div class="form-floating {% if errore['email'] == 1 %}is-invalid{% endif %}">
+                            <div class="mb-3">
+                                <label for="EMAIL" class="form-label">Email o Nome utente</label>
+                                <input class="form-control form-control-sm {% if errore['email']==1 %}is-invalid{% endif %}"
+                                       type="text" id="EMAIL" name="EMAIL" minlength="8" maxlength="50"
+                                       {% if campi['email'] != '' %} value="{{ campi['email'] }}" {% endif %}
+                                       placeholder="la tua email@mail.com" required/>
+                            </div>
+                        </div>
+                        <div class="invalid-feedback">
+                            Campo email non valido o email gi&aacute; in uso
+                        </div>
+                  </div>
+                  <!--Classico inserimento della doppia password, sono abbastanza restrittivo sui caratteri consentiti-->
+                  <div class="input-group has-validation mb-3">
+                      <div class="form-floating {% if errore['password']==1 %}is-invalid{% endif %}">
+                          <div class="mb-3">
+                              La password
+                              <ul>
+                                  <li>DEVE INCLUDERE Almeno (1)una Lettera maiuscola</li>
+                                  <li>DEVE INCLUDERE Almeno (1)una Lettera minuscola</li>
+                                  <li>DEVE INCLUDERE Almeno (1)un numero </li>
+                                  <li>DEVE INCLUDERE Almeno (1)un carattere speciale tra i seguenti "#$£%&€*.,-+"</li>
+                                  <li>DEVE ESSERE lunga almeno 8 caratteri</li>
+                              </ul>
+                              <label for="PASSWORD" class="form-label">Password</label>
+                              <input class="form-control form-control-sm {% if errore['password']==1 %}is-invalid{% endif %}" type="password"
+                                     id="PASSWORD" name="PASSWORD" placeholder="password" minlength="8" maxlength="50" required/>
+                          </div>
+                      </div>
+                      <div class="invalid-feedback">
+                            Campo password non valido
+                      </div>
+                  </div>
+                  <!--Secondo inserimento della password-->
+                  <div class="input-group has-validation mb-3">
+                      <div class="form-floating {% if errore['password']==1 %}is-invalid{% endif %}">
+                          <div class="mb-3">
+                              <label for="PASSWORD2" class="form-label">Ripeti la password</label>
+                              <input class="form-control form-control-sm {% if errore['password']==1 %}is-invalid{% endif %}" type="password" id="PASSWORD2" name="PASSWORD2" placeholder="password" minlength="8" maxlength="50" required/>
+                          </div>
+                      </div>
+                      <div class="invalid-feedback">
+                          Campo password non valido
+                      </div>
+                  </div>
+                  <!--Inserisco il nome, che non deve essere troppo corto-->
+                  <div class="input-group has-validation mb-3">
+                      <div class="form-floating {% if errore['nome']==1 %}is-invalid{% endif %}">
+                          <div class="mb-3">
+                              <label for="NOME" class="form-label">Il nome che vuoi mostrare sul sito</label>
+                              <input class="form-control form-control-sm {% if errore['nome']==1 %}is-invalid{% endif %}"
+                                     {% if campi['nome'] != '' %} value="{{ campi['nome'] }}" {% endif %}
+                                     type="text" id="NOME" name="NOME" minlength="8" maxlength="30"
+                                     placeholder="#baNaNa1 = esempio di nome corretto, non inserire il carattere @" required/>
+                          </div>
+                      </div>
+                      <div class="invalid-feedback">
+                          Campo nome non corretto o nome gi&aacute; in uso
+                      </div>
+                  </div>
+                  <!--Faccio inserire il telefono, sono generoso con la lunghezza massima, per contare gli spazi del formato
+                  ho scritto una regex per controllare che il formato del telefono sia corretto-->
+                  <div class="input-group has-validation mb-3">
+                      <div class="form-floating {% if errore['telefono']==1 %}is-invalid{% endif %}">
+                          <div class="mb-3">
+                              <label for="TELEFONO" class="form-label">Il tuo numero di telefono </label>
+                              <input class="form-control form-control-sm {% if errore['telefono']==1 %}is-invalid{% endif %}"
+                                     type="text" id="TELEFONO" name="TELEFONO"
+                                     minlength="9" maxlength="14" placeholder="123 123 1234" required
+                                     {% if campi['telefono'] != '' %} value="{{ campi['telefono'] }}" {% endif %}
+                                     pattern="^([ ]{0,10})?(\+39)?[ ]?(([0-9]){3}([ ])?([0-9]){3,4}([ ])?([0-9]){3,4})([ ]{0,10})?"/>
+                          </div>
+                      </div>
+                      <div class="invalid-feedback">
+                          Campo telefono non valido
+                      </div>
+                  </div>
+                  <!--Faccio scegliere il ruolo all'utente, anziché usare uno switch ho preferito usare una select
+                  perché penso che gli switch possano confondere più facilmente l'utente-->
+                  <div class="mb-3">
+                      <label for="RUOLO">Scegli il tuo ruolo: </label>
+                      <select class="form-select" id="RUOLO" name="RUOLO" aria-label="Floating label select">
+                        <option value="0" {% if campi['ruolo'] == 2 or campi['ruolo'] == 0  %} selected{% endif %} >Cliente</option>
+                        <option value="1"{% if campi['ruolo'] == 1 %} selected{% endif %}>Locatore</option>
+                      </select>
+                  </div>
+              </section>
+
+              <article class="form-footer">
+                  <button type="submit" class="btn submit form-buttons btn-success">Registrati</button>
+                  <button type="reset" class="btn reset form-buttons btn-danger">Cancella</button>
+              </article>
+          </form>
+      </main>
+    </div>
+</div>
+{% endblock %}

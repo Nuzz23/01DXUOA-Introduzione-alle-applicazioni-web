@@ -1,0 +1,59 @@
+/*Margini vari*/
+body header li{
+    margin-right: 1rem;
+}
+
+/*Gestisco la top bar in se per se*/
+.topbar{
+    z-index: 2; /*Modifico lo z index per averla sempre in primo piano*/
+    position: fixed;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 2fr;
+    grid-template-rows:1fr;
+    background-color: #15008b;
+    margin-top:3vw;
+}
+
+/*ELEMENTI DELLA TOP BAR*/
+    /*Logo del mio sito*/
+    #site-logo{
+        border-radius: 50%;
+        grid-column: 1;
+        grid-row: 1;
+        width:120px;
+        height: auto;
+        margin-top:4vw;
+        margin-right:10px;
+    }
+
+    /*Header con il nome del sito*/
+    header h1{
+        grid-column: 2;
+        grid-row: 1;
+        color: yellow;
+        margin-top:3vw;
+        margin-left:-3vw;
+    }
+
+    /*Pulsante di login del mio sito, solo utenti loggati*/
+    .logged{
+        grid-column: 3;
+        grid-row: 1;
+        margin-top:4vw;
+        margin-right:2vw;
+    }
+
+
+    /*Colore del benvenuto*/
+    .logged-text{
+        color: yellow;
+    }
+
+    /*Pulsante di login del mio sito, solo utenti non loggati*/
+    #not-logged{
+        margin-top:3vw;
+        margin-right:1vw;
+        grid-column: 3;
+        grid-row: 1;
+    }
+

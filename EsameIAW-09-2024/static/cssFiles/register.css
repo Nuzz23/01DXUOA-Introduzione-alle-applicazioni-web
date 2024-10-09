@@ -1,0 +1,17 @@
+#contenuto{
+    align-content: center;
+    display: grid;
+    grid-template-columns: 1fr 12fr 1fr;
+}
+
+main{
+    margin-top:8.5vw;
+    margin-bottom: 1vw;
+    border: 0.1vw solid black;
+    grid-column: 2;
+    grid-row:1;
+}
+
+form{
+    margin: 1.5vw;
+}

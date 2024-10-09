@@ -1,0 +1,168 @@
+
+/*GESTISCO LA STRUTTURA PRINCIPALE DELLA PAGINA COME GRID*/
+#annuncio{
+    margin-top:8vw;
+    width: 98vw;
+    display:grid;
+    grid-template-rows: 2fr 6fr 5.5fr;
+    grid-template-columns: 1fr 6fr 6fr 1fr;
+}
+
+/*GESTISCO LA PARTE SUPERIORE: INTESTAZIONE DELL'ANNUNCIO*/
+.annuncio-top-info{
+    grid-row:1;
+    grid-column:2/4;
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 3vw;
+    border-style: solid;
+    border-color: rgb(173, 173, 173);
+    border-width: 0.1vw;
+    background-color: #e2e2e2;
+    height:7vw;
+    margin-bottom:1vw;
+    align-items: center;
+    align-content: center;
+}
+
+    .annuncio-titolo{
+        margin-left:1.5vw;
+        grid-row:1;
+        grid-column: 1;
+    }
+
+    .annuncio-indirizzo{
+        margin-left:1.5vw;
+        grid-row:2;
+        grid-column: 1;
+    }
+
+/*GESTISCO LO SLIDESHOW DI FOTO*/
+    /*CAROSELLO DELLE FOTO*/
+    #carosello {
+        z-index: 1; /*Posizione asse Z*/
+        grid-column:2;
+        grid-row:2;
+        display: flex;
+        overflow: hidden; /*Evito overflow dei contenuti al di fuori dell'area del carosello*/
+        margin-right: 2vw;
+    }
+
+    .immagini2{
+        grid-column:2;
+        grid-row:2;
+        width:40vw;
+        height: 25vw;
+    }
+
+    .immagini1{
+        grid-column:2;
+        grid-row:2;
+        width:40vw;
+        height: 25vw;
+    }
+
+
+/*GESTISCO I CAMPI A LATO DELLA FOTO*/
+.annuncio-info{
+    grid-row:2;
+    grid-column: 3;
+    border-style: solid;
+    border-color: #808080;
+    border-width: 0.1vw;
+    background-color: #e2e2e2;
+    margin-left:1vw;
+    display:grid;
+    grid-template-columns: 6fr 1fr;
+    grid-template-rows: 2vw 3vw 3vw 7vw;
+}
+
+    /*ASIDE: INFORMAZIONI DEL LOCATORE/DATA*/
+    .annuncio-locatore{
+        margin-top:2vw;
+        margin-left:1vw;
+        grid-row:1;
+        grid-column:1;
+    }
+
+    /*ASIDE: INFORMAZIONI DELL'IMMOBILE*/
+    .annuncio-prezzo{
+        margin-left:1vw;
+        grid-row:3;
+        grid-column:1;
+    }
+
+    .annuncio-dati-immobile{
+        grid-row:4;
+        margin-left:1vw;
+        grid-column:1;
+    }
+
+    /*ASIDE: BOTTONE DI PRENOTAZIONE*/
+    .prenota-bottone{
+        margin-left:1vw;
+        grid-row:5;
+        grid-column:1;
+        height:2.5vw;
+        width:15vw;
+    }
+
+    #annuncio_id{
+        display: none;
+    }
+
+    .modifica-immagine, .modifica-collegamento{
+        grid-row:5;
+        grid-column: 2;
+        width:2.5vw;
+        height: 2.5vw;
+        margin-left:1vw;
+    }
+
+
+/*DESCRIZIONE DELL'ANNUNCIO*/
+    .annuncio-descrizione-holder{
+        margin-top:2vw;
+        grid-row:3;
+        grid-column:2/4;
+        border-style: solid;
+        border-color: #808080;
+        border-width: 0.1vw;
+        background-color: #e2e2e2;
+        margin-bottom:1vw;
+    }
+
+    .annuncio-descrizione{
+         margin: 1vw;
+         height:auto;
+    }
+
+/*Gestione dei consigliati*/
+    .consigliati{
+        margin:2vw;
+    }
+
+    .consigliati h3{
+        margin-left:3vw;
+    }
+
+    .consigliati-body{
+        display: flex;
+        justify-content: space-around;
+    }
+
+
+    .card{
+        background-color: #e2e2e2;
+        width: 18rem;
+    }
+
+    .card-list{
+        background-color: #e2e2e2;
+    }
+
+/*Gestione dello stile dei pulsanti*/
+    .btn-mio{
+        background-color: #15008b;
+        color:yellow;
+    }

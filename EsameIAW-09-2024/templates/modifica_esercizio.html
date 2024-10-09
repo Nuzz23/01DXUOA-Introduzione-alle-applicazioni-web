@@ -1,0 +1,71 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Modifica Esercizio
+{% endblock %}
+
+{% block head %}
+<meta name="viewport" content="width=device-width, initial-scale=1" xmlns="http://www.w3.org/1999/html">
+    <meta charset="utf-8" name="description" content="Modifica di un singolo esercizio" />
+    <meta name="author" content="Martina">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cssFiles/modifica_esercizio.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="pagina">
+  <main class="form-holder">
+    <form action="{{ url_for('modifica_esercizio_success', val=esercizio['ID']) }}" method="POST" id="modifica_esercizio_success" enctype="multipart/form-data">
+      <h3>Modifica Esercizio</h3>
+      <section class="form-area border-0">
+        <div class="input-group has-validation mb-3">
+          <div class="form-floating {% if errore == '10' or errore == '11' %}is-invalid{% endif %}">
+            <div class="mb-3">
+              <label for="TITOLO" class="form-label">Titolo</label>
+              <input class="form-control form-control-sm {% if errore == '10' or errore== '11' %}is-invalid{% endif %}"
+                     type="text" id="TITOLO" name="TITOLO" minlength="5" maxlength="50"
+                     placeholder="Sollevamento pesi" value="{{esercizio['TITOLO']}}"
+                     required pattern="[0-9a-zA-Z _]{5,50}"/>
+            </div>
+          </div>
+          <div class="invalid-feedback">
+            Titolo non valido
+          </div>
+        </div>
+        <div class="input-group has-validation mb-3">
+          <div class="form-floating {% if errore== '01' or errore == '11' %}is-invalid{% endif %}">
+            <div class="mb-3">
+              <label for="DESC" class="form-label">Descrizione</label>
+              <textarea rows="3" class="form-control form-control-sm {% if errore == '11' or errore == '01' %}is-invalid{% endif %}" type="text"
+                     id="DESC" name="DESC" placeholder="Alza i pesi al petto" minlength="8" maxlength="200"
+                     required>{{esercizio['DESC']}}</textarea>
+            </div>
+          </div>
+          <div class="invalid-feedback">
+            Descrizione non valida
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="DIFF">Difficolt&agrave; </label>
+          <select class="form-select" id="DIFF" name="DIFF" aria-label="Floating label select">
+            <option value="0" {% if esercizio['DIFF'] == 0 %} selected {% endif %}>Facile</option>
+            <option value="1" {% if esercizio['DIFF'] == 1 %} selected {% endif %}>Medio</option>
+            <option value="2" {% if esercizio['DIFF'] == 2 %} selected {% endif %}>Difficile</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="VIS">Visibilit&agrave; </label>
+          <select class="form-select" id="VIS" name="VIS" aria-label="Floating label select">
+            <option value="0"{% if esercizio['VIS'] == 0 %} selected {% endif %}>Solo tu (privato)</option>
+            <option value="1"{% if esercizio['VIS'] == 1 %} selected {% endif %}>Tutti (pubblico)</option>
+          </select>
+        </div>
+      </section>
+      <article class="form-footer">
+        <button type="submit" class="btn submit form-buttons btn-success">Conferma</button>
+        <button type="reset" class="btn reset form-buttons btn-danger">Cancella</button>
+      </article>
+    </form>
+  </main>
+</div>
+{% endblock %}

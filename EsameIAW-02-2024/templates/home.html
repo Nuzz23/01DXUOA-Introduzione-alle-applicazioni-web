@@ -1,0 +1,85 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Home di AffittaSI Ragusa" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/home.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto-pagina">
+
+    <!-- opzioni di filtraggio predefinite, definite come un aside di una lista non ordinata-->
+    <!-- Filtraggio previsto: Prezzo asc, Num locali desc, arredata si/no-->
+    <aside class = "filters">
+        <h3 class="filters-title">Filtri di ordinamento  </h3>
+        <nav>
+            <section class="card filters-list">
+                <ul class="list-group list-group-flush">
+                    <!-- Singolo elemento della lista, il primo essendo il comportamento di default riporta alla home normalmente
+                    mentre gli altri riportano sempre alla home, ma sotto altro url-->
+                    <li class="list-group-item">
+                        <a class="btn btn-mio btn-info filters-1" href="{{ url_for('home') }}" role="button">Prezzo mensile (decrescente)
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn btn-mio btn-info filters-1" href="{{ url_for('home_filtered', id_filtro=1) }}" role="button">Numero di Locali (crescente)
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn btn-mio btn-info filters-1" href="{{ url_for('home_filtered', id_filtro=2) }}" role="button">Arredata
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="btn btn-mio btn-info filters-1" href="{{ url_for('home_filtered', id_filtro=3) }}" role="button">Non arredata
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </nav>
+    </aside>
+
+    <!-- visualizzazione degli annunci del sito presenti nella base dati e disponibili al momento della query-->
+    <main id="post-holder">
+        {% for i in range(0, num_annunci) %}
+                <article class="annuncio">
+                    <!--L'utente può vedere più notizie sull'annuncio cliccando sull'immagine che maschera un'ancora-->
+                    <a href="{{url_for('annuncio', annuncio_id=annunci[i]['id'] )}}" class="annuncio-link" title="annuncio di {{ annunci[i]["nome_locatore"] }} per {{ annunci[i]['indirizzo'] }}">
+                        <img class="copertina" src="{{ url_for('static', filename=annunci[i]["foto"][0] ) }}" alt="foto dell'immobile in affitto di {{ annunci[i]["nome_locatore"] }}" />
+                    </a>
+                    <!--Caratteristiche, in breve, dell'annuncio-->
+                    <article class="annuncio-info">
+                        <h5 class="annuncio-titolo">
+                            {{ annunci[i]["titolo"].upper() }}
+                        </h5>
+                        <h6 class="annuncio-indirizzo smaller">
+                            {{ annunci[i]["indirizzo"] }}
+                        </h6>
+                        <p class="annuncio-locatore">
+                            <em>{{ annunci[i]['nome_locatore'] }}</em>
+                        </p>
+                        <p class="annuncio-prezzo">
+                            Affitto mensile: <b>{{ annunci[i]['prezzo'] }} &euro; </b>
+                        </p>
+                        <p class="annuncio-locali">
+                           <b>{{ annunci[i]['locali'] }} locali </b>
+                        </p>
+                        <p class="annuncio-descrizione">
+                            {% if annunci[i]['descrizione']|length > 50 %}
+                                {{ annunci[i]['descrizione'][0:50:1] + '...' }}
+                            {% else %}
+                                {{ annunci[i]['descrizione'] }}
+                            {% endif %}
+                        </p>
+                    </article>
+                </article>
+        {% endfor %}
+    </main>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "header_nav.html" %}
+
+
+{% block title %}
+Visualizza scheda
+{% endblock %}
+
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Visualizzazione di una scheda"/>
+    <meta name="author" content="Martina" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='cssFiles/visualizza_scheda.css') }}" />
+{% endblock %}
+
+
+{% block content %}
+<div id="contenuto">
+    <main>
+        <h4 class="dati">Fatta da {{scheda['AUTORE']}} per {{scheda['RICEVENTE']}}</h4>
+        {% if scheda['RATING'] == -1 %}
+            <h4 class="rating">Scheda non ancora valutata</h4>
+        {% else %}
+            <h4 class="rating">Scheda valutata: {{scheda['RATING']}}/5</h4>
+        {% endif %}
+
+        {% if utente.is_authenticated and not utente.RUOLO %}
+            {% if scheda['RATING'] == -1 %}
+                <button type="button" class="btn btn-info voto" data-bs-toggle="modal" data-bs-target="#Voto">
+                    Valuta
+                </button>
+            {% else %}
+                <button type="button" class="btn btn-info voto" data-bs-toggle="modal" data-bs-target="#Voto">
+                    Aggiorna valutazione
+                </button>
+            {% endif %}
+
+
+    <section class="modal fade" id="Voto" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+              <!--Contenuto principale del modale-->
+                  <article class="modal-body">
+                    <form action="{{ url_for('valuta_scheda', val=scheda['ID']) }}" method="POST" id="valuta_scheda" enctype="multipart/form-data">
+                        <h3>Valuta Scheda</h3>
+                        <section class="form-area border-0">
+                            <label for="RATE" class="form-label">Valuta la scheda
+                            (<em>da 1 a 5 con passo 0.5</em>)</label>
+                            <br>
+                            <input type="number" class="spaziami" min="1" max="5" step="0.5" id="RATE" name="RATE" required
+                            {% if scheda['RATING'] != -1 %} value="{{scheda['RATING']}}" {% endif %}
+                            />
+                            <br>
+                        </section>
+                        <article class="form-footer">
+                            <button type="submit" class="btn submit form-buttons btn-success">Conferma</button>
+                            <button type="reset" class="btn reset form-buttons btn-danger">Cancella</button>
+                        </article>
+                    </form>
+                  </article>
+              </div>
+          </div>
+    </section>
+        {% endif %}
+
+        {% if utente.is_authenticated and utente.RUOLO %}
+    <section class="interazioni">
+        <a class="btn btn-primary mod" href="{{ url_for('modifica_scheda', val=scheda.ID) }}"
+           role="button">Modifica scheda</a>
+        <a class="btn elim btn-danger" href="{{ url_for('elimina_scheda', val=scheda.ID) }}"
+           role="button">Elimina scheda</a>
+    </section>
+    {% endif %}
+
+        <section class="scheda">
+          {% for esercizio in scheda['ESERCIZI'] %}
+            <article class="esercizio">
+                <h3 class="titolo">{{esercizio.TITOLO}}</h3>
+                {% if esercizio.DIFF == 0 %}
+                    <h4 class="diff facile">Facile</h4>
+                {% elif esercizio.DIFF == 1 %}
+                    <h4 class="diff medio">Medio</h4>
+                {% else %}
+                    <h4 class="diff difficile">Difficile</h4>
+                {% endif %}
+                <em class="autore">Autore: {{esercizio.AUTORE}}</em>
+                <p class="desc">{{esercizio.DESC}}</p>
+            </article>
+          {% endfor %}
+      </section>
+    </main>
+
+
+</div>
+{% endblock %}

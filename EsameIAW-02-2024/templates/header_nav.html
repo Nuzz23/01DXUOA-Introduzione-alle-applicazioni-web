@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<!--Rappresenta la base di partenza per tutte le pagine-->
+<head>
+    <!--Definisco una porzione del titolo che ogni pagina integrerà-->
+    <title>RG AffittaSI- {% block title %} {% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/header_nav.css') }}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />  
+    <!--aggiungo il blocco head per permetterne il completamento a ogni pagina, aggiungo una piccola favicon -->
+    {% block head %}
+    {% endblock %}
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+</head>
+
+<body>
+     <header>
+            <!--Aggiungo la top bar fissa presente sopra ogni pagina con le relative funzionalità-->
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid topbar">
+                    <a class="navbar-brand logo" href="{{ url_for('home') }}">
+                        <img id="site-logo" src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="logo del sito AffittaSI sezione Ragusa" />
+                    </a>
+                    <h1 class="title">AffittaSI Ragusa</h1>
+                    {% if current_user.is_authenticated %}
+                        <article class = "logged">
+                        <!--A seconda che l'utente abbia fatto il login e il ruolo che ricopre, vedrà una top bar leggermente differente-->
+                            {% if utente.RUOLO %}
+                                <h3 class="logged-text">Benvenuto <a href="{{ url_for('profilo_locatore', username=utente['NOME'], filtro=1) }}">{{ utente['NOME'] }}</a></h3>
+                                <a class="btn btn-primary btn-sm" href="{{ url_for('nuovo_annuncio') }}" role="button">Crea annuncio</a>
+                                <a class="btn btn-primary btn-sm" href="{{ url_for('profilo_locatore', username=utente['NOME'], filtro=1) }}" role="button">Profilo</a>
+                            {% else %}
+                                <h3 class="logged-text">Benvenuto <a href="{{ url_for('profilo_cliente', username=utente['NOME'], filtro=1) }}">{{ utente['NOME'] }}</a></h3>
+                                <a class="btn btn-primary btn-sm" href="{{ url_for('profilo_cliente', username=utente['NOME'], filtro=1) }}" role="button">Profilo</a>
+                            {% endif %}
+                            <a class="logged-button btn btn-primary btn-sm" href="{{ url_for('logout') }}" role="button">Logout</a>
+                        </article>
+                    {% else %}
+                        <a id="not-logged" class="btn btn-primary" href="{{ url_for('login', errore=False) }}" role="button">Login</a>
+                    {% endif %}
+                </div>
+            </nav>
+    </header>
+
+     <!--Qui verrà inserito il contenuto di tutte le altre pagine-->
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+     </script>
+
+    <footer>
+        {% block footer %}
+        {% endblock %}
+    </footer>
+
+    </body>
+</html>
