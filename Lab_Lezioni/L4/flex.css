@@ -1,0 +1,26 @@
+.contenitore{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #7fffd4;
+    height: 20vw;
+    flex-direction: row;
+
+}
+
+.contenitore div{
+    margin: 0.5em;
+    background-color: burlywood;
+}
+
+#one{
+    flex:2;
+}
+
+#two{
+    flex:1;
+}
+
+#three{
+    flex:1;
+}

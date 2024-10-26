@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <h1>MangiaTO</h1>
+    <p>Benvenuto sul sito della mensa del Politecnico di Torino.</p>
+    <h2>Menu</h2>
+    <ul>
+      {% for plate in first %}
+      <li>{{ plate.name | e }}</li>
+      {% endfor %}
+    </ul>
+
+    <form action="recensioni/new" method="POST">
+
+        <label for="txtNomeCognome">Nome e cognome</label>
+        <input type="text" id="txtNomeCognome" name="NomeCognome" required minlength="5" maxlength="100">
+        <br>
+        <label for="txtMatricola">Matricola</label>
+        <input type="text" id="txtMatricola" name="Matricola" required minlength="7" maxlength="7" placeholder="SXXXXXX">
+        <br>
+        <label for="txtRecensione">Recensione</label>
+        <textarea id="txtRecensione" name="Recensione" required minlength="20" maxlength="100" cols="30" rows="3" placeholder="Inserisci qui la recensione"></textarea>
+        <br>
+
+        <button type="submit">Invia recensione</button>
+    </form>
+
+    <a href="{{ url_for('recensio') }}" >Fdfef</a>
+
+
+{% endblock %}

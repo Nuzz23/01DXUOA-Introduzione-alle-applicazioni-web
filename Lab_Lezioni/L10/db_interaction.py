@@ -1,0 +1,1 @@
+import sqlite3if __name__ == '__main__':    sql = 'SELECT * FROM PROVA'    connection = sqlite3.connect('tasks.db')    cursor = connection.cursor()    cursor.execute('INSERT INTO PROVA VALUES (?, ?, ?)', ("2", "LUCA", "AAAA"))    connection.commit()    cursor.execute(sql)    result = cursor.fetchall()    cursor.close()    connection.close()

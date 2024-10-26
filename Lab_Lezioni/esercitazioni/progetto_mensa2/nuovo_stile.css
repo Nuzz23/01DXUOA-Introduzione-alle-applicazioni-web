@@ -1,0 +1,42 @@
+header{
+    display: flex;
+    background-color: aqua;
+    align-items: center;
+    padding: 0 0.5rem;
+    flex-direction: column;
+}
+
+
+#img-logo{
+    height: 15vw;
+    width: 15vw
+}
+
+#img-poli{
+    height: 25vw;
+    width: 98vw;
+}
+
+#content-header{
+    padding: 0.5rem;
+    width: 80vw;
+}
+
+#content-header *{
+    margin: 0.5rem;
+}
+
+#nav-links{
+    background-color: lightgreen;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-around;
+    font-size: medium;
+    font-weight: bold;
+}
+
+main{
+    display: flex;
+}
+
+/*commento*/
