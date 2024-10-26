@@ -1,0 +1,56 @@
+body header li{
+    margin-right: 1rem;
+}
+
+.topbar{
+    position: fixed;
+    display:grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 1;
+    background-color: aqua;
+    margin-top:3vw;
+}
+
+#site-logo{
+    grid-row:1;
+    grid-column: 1;
+    width:10vw;
+    height: 6vw;
+    border-radius: 0.2vw;
+    border-color: black;
+    border-style:dashed;
+    margin-top:3vw;
+}
+
+header h1{
+    grid-row: 1;
+    grid-column: 2;
+    color: salmon;
+    margin-top:3vw;
+}
+
+.links-header{
+    margin-top: 2vw;
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/*interattività della pagina tablet*/
+
+@media (700px<=width<=992px) {
+
+    .topbar{
+        margin-top:5vw;
+    }
+
+}
+
+/*interattivita della pagina per telefono*/
+@media (width <700px) {
+    .topbar{
+        margin-top:5vw;
+    }
+
+}

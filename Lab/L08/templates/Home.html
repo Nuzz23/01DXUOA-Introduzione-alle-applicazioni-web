@@ -1,0 +1,165 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block Home_active %}
+    active
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Home del social pescato" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/home.css') }}" />
+{% endblock %}
+
+
+{% block js_scripts %}
+<script>
+    const myModal = document.getElementById('myModal')
+    const myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus()
+    })
+</script>
+<script>
+        (() => {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="everything">
+    <aside class="links-date">
+                <a href="https://www.instagram.com/" title="oggi">Oggi</a>
+                <a href="https://www.instagram.com/" title="oggi">Questa Settimana</a>
+                <a href="https://www.instagram.com/" title="questo mese">Questo Mese</a>
+    </aside>
+
+
+    <main id="post-holder">
+        {% for i in range(0, numpost) %}
+            {% if lista_post[i]["image"] != '*' %}
+                <article class="post">
+                    <a href="{{url_for('postato', id=i + 1)}}" class="pescato-link" title="post di {{ lista_post[i]["username"] }}">
+                        <img class="pescato" src="{{ url_for('static', filename=lista_post[i]["image"] ) }}" alt="foto della trota pescata da {{ lista_post[i]["username"] }}" />
+                    </a>
+                    <div class="info-profilo">
+                        <img class="foto-profilo" src="{{ url_for('static', filename=lista_post[i]["profile"]) }}" alt="foto profilo di {{ lista_post[i]["username"] }}" />
+                        <h4 class="name">@{{ lista_post[i]["username"] }} </h4>
+                        <h5 class="post-timestamp">
+                            {{ lista_post[i]["date"] }}
+                        </h5>
+                    </div>
+                    <p class="post-testo">
+                        {{ lista_post[i]["text"] |safe}}
+                    </p>
+                </article>
+            {% else %}
+                <article class="post_text">
+                    <div class="info-profilo_text">
+                        <img class="foto-profilo_text" src="{{ url_for('static', filename=lista_post[i]["profile"]) }}" alt="foto profilo di {{ lista_post[i]["username"] }}" />
+                        <h4 class="name_text">@{{ lista_post[i]["username"] }} </h4>
+                        <h5 class="post-timestamp_text">
+                            {{ lista_post[i]["date"] }}
+                        </h5>
+                    </div>
+                    <p class="post-testo_text">
+                        {{ lista_post[i]["text"] |safe}}
+                    </p>
+
+                    <button class="likes">
+                        <em>{{ lista_post[i]["likes"] }}</em>🦈
+                    </button>
+                    <button class="reply">
+                        <em>Rispondi</em>
+                    </button>
+                </article>
+            {% endif %}
+        {% endfor %}
+    </main>
+
+    <div class="modal fade" id="new-post" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="new-post-label">Inserisci il nuovo pescato: 🎣</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="new-post-body">
+              <form action="{{ url_for('nuovo_post') }}" method="POST" id="nuovo_post" enctype="multipart/form-data">
+                <div class="form-area border-0">
+                  <label for="username" class="form-label">@Usernames<span style="color:red">*</span></label>
+                  <select class="form-select" id="username" name="username" aria-label="Usernames disponibili" required>
+                      <option selected>Username presenti</option>
+                      {% set nomi = [] %}
+                      {% for i in range(0, numpost) %}
+                          {% if lista_post[i]["username"] not in nomi %}
+                            {{ nomi.append(lista_post[i]["username"]) }}
+                          {% endif %}
+                          {%  set nomi = nomi|sort %}
+                      {% endfor %}
+                      {% for i in range(0, nomi|length) %}
+                          <option value={{ i }}>{{ nomi[i] }}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                  <label for="text" class="form-label">Descrizione del post <span style="color:red">*</span> </label>
+                  <textarea class="form-control" id="text" name="text" rows="3" required minlength="30" maxlength="200"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="date" class="form-label">Giorno della pesca<span style="color:red">*</span></label>
+                  <input class="form-control form-control-sm " type="date" id="date" name="date" min="2000-01-01" max="{{ today_date }}" required/>
+                </div>
+                <div class="mb-3">
+                  <label for="image" class="form-label">Immagine del post</label>
+                  <input class="form-control form-control-sm" id="image" name="image" type="file" accept="image/jpeg, image/png, image/jpg, image/heif">
+                </div>
+                <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label" for="invalidCheck">
+                        Aderisci a termini e condizioni d'uso <span style="color:red">*</span>
+                    </label>
+                    <div class="invalid-feedback">
+                        Devi aderire per caricare un nuovo post
+                    </div>
+                </div>
+                </div>
+                    <div class="modal-footer">
+                      <div class="smaller">
+                           <span style="color:red">*</span> campo obbligatorio
+                      </div>
+                      <button type="submit" class="btn btn-primary submit">Carica</button>
+                      <button type="reset" class="btn btn-primary reset">Reset</button>
+                    </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+</div>
+    <button type="button" data-bs-toggle="modal" data-bs-target="#new-post" id="big-plus" class="btn btn-success">+</button>
+{% endblock %}

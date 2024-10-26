@@ -1,0 +1,95 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Iscriviti
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Iscrivi al social pescato" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/iscriviti.css') }}" />
+{% endblock %}
+
+
+{% block js_scripts %}
+<script>
+    const myModal = document.getElementById('myModal')
+    const myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus()
+    })
+</script>
+<script>
+        (() => {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      const forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+
+          form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="everything">
+      <div class="log-user-body">
+          <form action="{{ url_for('iscrizione_utente_compilato') }}" method="POST" id="login_utente" enctype="multipart/form-data">
+              <h3>NUOVO PESCATORE</h3>
+            <div class="form-area border-0">
+              <div class="mb-3">
+              <label for="username" class="form-label">@Username<span style="color:red">*</span></label>
+              <textarea class="form-control" id="username" name="username" rows="1" required minlength="3" maxlength="50"></textarea>
+              </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password<span style="color:red">*</span></label>
+                DEVE:
+                <ul>
+                    <li>INCLUDERE Almeno (1)una Lettera maiuscola</li>
+                    <li>INCLUDERE Almeno (1)una Lettera minuscola</li>
+                    <li>INCLUDERE Almeno (1)un numero </li>
+                    <li>INCLUDERE Almeno (1)un carattere speciale tra i seguenti "#@$£%&€"</li>
+                    <li>Essere lunga almeno 8 caratteri</li>
+                </ul>
+              <input class="form-control form-control-sm " type="password" id="password" name="password" minlength="8" maxlength="50" required/>
+            </div>
+            <div class="mb-3">
+              <label for="image" class="form-label">Foto profilo<span style="color:red">*</span></label>
+              <input class="form-control form-control-sm " type="file" id="image" name="image" required/>
+            </div>
+            <div class="col-12">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                <label class="form-check-label" for="invalidCheck">
+                    Accetto i termini di uso<span style="color:red">*</span>
+                </label>
+                <div class="invalid-feedback">
+                    Accetta per registrarti
+                </div>
+            </div>
+            </div>
+
+            </div>
+                <div class="modal-footer">
+                  <div class="smaller">
+                       <span style="color:red">*</span> campo obbligatorio
+                  </div>
+                  <button type="submit" class="btn btn-primary submit">Carica</button>
+                  <button type="reset" class="btn btn-primary reset">Reset</button>
+                </div>
+          </form>
+      </div>
+    </div>
+{% endblock %}

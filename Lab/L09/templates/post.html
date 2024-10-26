@@ -1,0 +1,152 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Post
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="post di pescato" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/post.css') }}" />
+{% endblock %}
+
+
+{% block js_scripts %}
+    <script>
+
+        function enableCreateUser() {
+            if (document.getElementById("anonimo").checked) {
+                disableForm(true);
+            }
+            if (!document.getElementById("anonimo").checked) {
+                disableForm(false);
+            }
+
+        }
+
+        function disableForm(flag) {
+            let elements = document.getElementsByClassName("form-control");
+            elements[0].readOnly = flag;
+            elements[0].disabled = flag;
+
+}
+    </script>
+{% endblock %}
+
+
+{% block content %}
+<article class="post">
+    <section class="post-content">
+        <img class="pescato" src="{{ url_for('static', filename=post["image"]) }}" alt="foto del(la) {{ post["type"] }} pescata da {{ post["username"] }}" />
+        <div class="info-profilo">
+            <img class="foto-profilo" src="{{ url_for('static', filename=post["profile"]) }}" alt="foto profilo di {{ post["username"] }}" />
+            <h2 class="name">@{{ post["username"] }} </h2>
+            <button class="likes1">
+                🦈 <em>{{ post["likes"] }} sharks</em> 🦈
+            </button>
+            <button class="likes2">
+                <em>{{ post["likes"] }} </em>🦈
+            </button>
+            <button class="comments-numb1">
+                🎣<em>{{ numcommenti }} commenti pescati</em>🎣
+            </button>
+            <button class="comments-numb2">
+                <em>{{ numcommenti }}</em>🎣
+            </button>
+        </div>
+        <h5 class="post-location">
+            ⚓{{ post["location"] }}
+        </h5>
+        <h5 class="post-timestamp">
+            {{ post["date"] }}
+        </h5>
+        <h5 class="fish-type">
+            🐟{{ post["type"] |safe }}
+        </h5>
+        <h5 class="weight">
+            ⚖️{{ post["weight"] }}kg
+        </h5>
+        <h5 class="length">
+            📏{{ post["length"] }}cm
+        </h5>
+        <p class="post-testo">
+            {{ post["text"] |safe}}
+        </p>
+    </section>
+
+    <section class="post-comments">
+    <aside class="commenti">
+        <div class="comments-top" >
+            <h3>{{ numcommenti }} commenti</h3>
+        </div>
+        {% for i in range(0, numcommenti) %}
+        <article class="comment">
+            <div class="info-profilo-commento">
+                <img class="foto-profilo-commento" src="{{ url_for('static', filename=commenti_post[i]["profile"])  }}" alt="foto profilo di {{ commenti_post[i]["username"] }}" />
+                <h4 class="name-commento">@{{ commenti_post[i]["username"] }} </h4>
+                <h5 class="post-timestamp-commento">
+                    {{ commenti_post[i]["date"] }}
+                </h5>
+            </div>
+
+            {% if commenti_post[i]['image'] == '*' %}
+                <p class="testo-commento">
+                    <i>{{ commenti_post[i]["text"] }}</i>
+                </p>
+            {% else %}
+                <img class="immagine-commento" src="{{ url_for('static', filename=commenti_post[i]['image']) }}" alt="foto del commento di {{ commenti_post[i]['username'] }}"/>
+                <p class="testo-commento-img">
+                    <i>{{ commenti_post[i]["text"] }}</i>
+                </p>
+            {% endif %}
+            <button class="like-commento">
+                <em>{{ commenti_post[i]["likes"] }}</em>🦈
+            </button>
+            <p class="stars">
+                {{ commenti_post[i]["stars"] }}⭐
+            </p>
+            <button class="reply-commento">
+                <em>Rispondi</em>
+            </button>
+        </article>
+        {% endfor %}
+    </aside>
+    </section>
+
+    <section class="new-comment">
+        <form method="POST" action="{{ url_for('new_commento', id=id + 1) }}" enctype="multipart/form-data">
+            <h3>Nuovo Commento</h3>
+            <article class="form-campi">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="anonimo" name="anonimo" onclick="enableCreateUser()">
+                    <label class="form-check-label" for="anonimo">Anonimo<span style="color:red">*</span></label>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control inser" id="username" name="username" aria-describedby="username" placeholder="@XXX" minlength="3" maxlength="30" pattern="@[A-Za-z0-9_]{2,29}">
+                </div>
+                <div class="mb-3">
+                  <label for="text" class="form-label">Commento<span style="color:red">*</span> </label>
+                  <textarea class="form-control inser" id="text" name="text" rows="3" required minlength="5" maxlength="200"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="valutazione" class="form-label">⭐Gradimento (da 1 a 5 stelle) <span style="color:red">*</span></label>
+                    <input type="range" class="form-range inser" min="1" max="5" step="1" id="valutazione" name="valutazione" required>
+                </div>
+                <div class="mb-3">
+                  <label for="image" class="form-label">Immagine commento</label>
+                  <input class="form-control form-control-sm" id="image" name="image" type="file" accept="image/jpeg, image/png, image/jpg, image/heif">
+                </div>
+                <div class="form-foot">
+                    <button type="submit" class="btn btn-success btn-invio">Posta</button>
+                    <button type="reset" class="btn btn-danger btn-reset">Reset</button>
+                    <div class="smaller">
+                           <span style="color:red">*</span> obbligatorio
+                    </div>
+                </div>
+            </article>
+        </form>
+    </section>
+</article>
+{% endblock %}

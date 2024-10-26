@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <title>Pescatori</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="pagina del social migliore di internette" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="foglio_stile.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />  
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid topbar">
+                <a class="navbar-brand logo" href="#">
+                    <img id="site-logo" src="img/logo.png" alt="logo del social media" />
+                </a>
+                <h1>Il Pesciolone Fresco</h1>
+                <div class="links-header">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item active">
+                                <a href="https://www.instagram.com/" title="pagina home"> Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://www.instagram.com/nunzio03l/" title="chi siamo">Chi siamo</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+          </nav>
+    </header>
+
+    <aside class="links-date">
+                <a href="https://www.instagram.com/" title="oggi">Oggi</a>
+                <a href="https://www.instagram.com/" title="oggi">Questa Settimana</a>
+                <a href="https://www.instagram.com/" title="questo mese">Questo Mese</a>
+    </aside>
+
+
+    <main>
+        <article class="post" id="luigi-post">
+            <img class="pescato" src="img/trota.jpg" alt="foto della trota pescata da luigi" />
+            <div class="info-profilo">
+                <img class="foto-profilo" src="img/cane.jpg" alt="foto profilo di luigi" />
+                <h4 class="name">@Luigi </h4>
+                <h5 class="post-timestamp">2 giorni fa</h5>
+            </div>
+            <p class="post-testo">Trota &egrave; il nome comune che accomuna varie specie di pesci della famiglia Salmonidae. <br>
+                Il termine viene utilizzato specificamente per i pesci appartenenti ai generi Salmo, 
+                che include le specie dell'Oceano Atlantico, Oncorhynchus, che include le specie del Pacifico, e Salvelinus.
+            </p>
+        </article>
+
+        <article class="post" id="juan-post">
+            <img class="pescato" src="img/persico.jpg" alt="foto del pesce persico pescato da juan" />
+            <div class="info-profilo">
+                <img class="foto-profilo" src="img/labrador.jpg" alt="foto profilo di juan" />
+                <h4 class="profile-name">@Juan </h4>
+                <h5 class="post-timestamp">4 giorni fa</h5>
+            </div>
+            <p class="post-testo">Il pesce persico (<em>Perca fluviatilis</em>, Linnaeus 1758), conosciuto 
+                comunemente in Italia come persico reale o, semplicemente, persico, &eacute; un pesce d'acqua dolce appartenente 
+                alla famiglia dei Percidi, dell'ordine dei Perciformes.
+            </p>
+        </article>
+
+        <article class="post" id="alberto-post">
+            <img class="pescato" src="img/granchio.jpeg" alt="foto del grancio pescato da alberto" />
+            <div class="info-profilo">
+                <img class="foto-profilo" src="img/pitbull.jpg" alt="foto profilo di alberto" />
+                <h4 class="name">@Alberto </h4>
+                <h5 class="post-timestamp">4 giorni fa</h5>
+            </div>
+            <p class="post-testo">I granchi (<em>Brachyura Linnaeus</em>, 1758) 
+                sono un infraordine di crostacei decapodi prevalentemente acquatici.<br>
+                I granchi sono in particolare dotati di un robusto carapace e di due potenti chele, 
+                pertanto utilizzano quattro paia di arti per il movimento e le chele per prendere, difendersi e cibarsi. <br>
+                In alcune specie una chela si presenta vistosamente di maggior dimensioni rispetto l'altra. 
+                L'addome &egrave; ripiegato verticalmente ed &egrave; quindi nascosto.
+            </p>
+        </article>
+
+        
+        
+    </main>
+    <button type="button" id="big-plus" class="btn btn-success">+</button>
+   
+   <!-- <button type="button" id="big-plus" class="btn btn-success">
+        <h4 id="big-plus-plus">+</h4>
+    </button>
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

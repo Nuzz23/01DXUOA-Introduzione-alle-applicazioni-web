@@ -1,0 +1,33 @@
+#everything{
+    align-content: center;
+    margin-top:10vw;
+    margin-right:5vw;
+    margin-left:5vw;
+    border-width: 0.1vw;
+    border-style: solid;
+    border-color:black;
+}
+
+.log-user-body{
+    margin-right:1.5vw;
+    margin-left:1.5vw;
+    margin-top:1.5vw;
+}
+
+.modal-footer{
+    margin-bottom:1vw;
+}
+
+.btn{
+    margin-left:0.5vw;
+    margin-right:0.5vw;
+}
+
+.form-check{
+    margin-bottom:1vw;
+}
+
+.testo-iscrizione{
+    margin-top:0.5vw;
+    text-align:center;
+}

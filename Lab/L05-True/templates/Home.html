@@ -1,0 +1,58 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block Home_active %}
+    active
+{% endblock %}
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="Home del social pescato" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/home.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div id="everything">
+    <aside class="links-date">
+                <a href="https://www.instagram.com/" title="oggi">Oggi</a>
+                <a href="https://www.instagram.com/" title="oggi">Questa Settimana</a>
+                <a href="https://www.instagram.com/" title="questo mese">Questo Mese</a>
+    </aside>
+
+
+    <main id="post-holder">
+        {% for i in range(0, numpost) %}
+        <article class="post">
+            <a href="{{url_for('postato', id=i + 1)}}" class="pescato-link" title="post di {{ lista_post[i]["username"] }}">
+                <img class="pescato" src="{{ url_for('static', filename=lista_post[i]["image"] ) }}" alt="foto della trota pescata da {{ lista_post[i]["username"] }}" />
+            </a>
+            <div class="info-profilo">
+                <img class="foto-profilo" src="{{ url_for('static', filename=lista_post[i]["profile"]) }}" alt="foto profilo di {{ lista_post[i]["username"] }}" />
+                <h4 class="name">@{{ lista_post[i]["username"] }} </h4>
+                <h5 class="post-timestamp">
+                    {% if lista_post[i]["date"]==1 %}
+                        1 ora
+                    {% elif lista_post[i]["date"] <=24 %}
+                        {{ lista_post[i]["date"] }} ore
+                    {% elif lista_post[i]["date"] <=48%}
+                        1 giorno
+                    {% else %}
+                        {{ lista_post[i]["date"] // 24 }} giorni
+                    {% endif %}
+                    fa
+                </h5>
+            </div>
+            <p class="post-testo">
+                {{ lista_post[i]["text"] |safe}}
+            </p>
+        </article>
+
+        {% endfor %}
+    </main>
+</div>
+    <button type="button" id="big-plus" class="btn btn-success">+</button>
+{% endblock %}

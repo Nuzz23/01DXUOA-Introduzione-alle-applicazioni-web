@@ -1,0 +1,265 @@
+body{
+    display: grid;
+    grid-template-columns: 2;
+    grid-template-rows: 2; 
+}
+
+body header li{
+    margin-right: 1rem;
+}
+
+.topbar{
+    position: fixed;
+    display:grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 1;
+    background-color: aqua;
+    margin-top:3vw;
+}
+
+#site-logo{
+    grid-row:1;
+    grid-column: 1;
+    width:10vw;
+    height: 6vw;
+    border-radius: 0.2vw;
+    border-color: black;
+    border-style:dashed;
+    margin-top:3vw;
+}
+
+header h1{
+    grid-row: 1;
+    grid-column: 2;
+    color: salmon;
+    margin-top:3vw;
+}
+
+.links-header{
+    margin-top: 2vw;
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.links-date {
+    margin-top:7vw;
+    display:grid;
+    height: 6em;
+    width: 18vw;
+    grid-column: 1;
+    grid-row: 2;
+    margin-left:3vw;   
+}
+
+
+main{
+    margin-top:7vw;
+    display:grid;
+    grid-template-columns: 1;
+    grid-template-rows: 3;
+    width: 78vw;
+    grid-column: 2;
+    grid-row: 2;
+    margin-left:-3vw;
+    margin-bottom:3vw;
+}
+
+/*tag generali per i post*/
+.post{
+    display: grid;
+    grid-template-rows:2;
+    grid-template-columns: 2;
+    margin: 2vw 1vw 3vw 1vw;
+    border: 0.2em;
+    border-style: solid;
+}
+
+.pescato{
+    margin-left:2vw;
+    margin-top:2vw;
+    grid-row:1/3;
+    grid-column: 1;
+    height: 20vw;
+    width: 24vw;
+    margin-bottom:2vw;
+}
+
+.info-profilo{
+    margin-top:2vw;
+    display: flex;
+    grid-row:1;
+    grid-column: 2;
+}
+
+.foto-profilo{
+    height:7vw;
+    width:2vw;
+    margin-left: 1.5vw;
+    flex:1;
+    border-color: blue;
+    border-width:0.2em;
+    border-style: groove;
+}
+
+.profilo-name{
+    flex:2;
+    text-align: left;
+    vertical-align: center center;
+}
+
+.post-timestamp{
+    text-align: end;
+    margin-right:2vw;
+    flex:3;
+}
+
+.post-testo{
+    grid-row: 2;
+    grid-column: 2;
+    margin-left: 0.4rem;
+    text-align: justify;
+    margin-right: 1vw; 
+    margin-left: 1vw;
+}
+
+
+/*tag dei singoli post*/
+#luigi-post{
+    grid-row:1;
+    grid-column: 1;
+}
+
+#juan-post{
+    grid-row:2;
+    grid-column: 1;
+}
+
+#alberto-post{
+    grid-row:3;
+    grid-column: 1;
+    border-bottom:0em;
+}
+
+/* bottone*/
+#big-plus{
+    border:none;
+    height: 60px;
+    position: fixed;
+    right: 30px;
+    bottom:25px;
+    border-radius: 50%;
+    width:60px;
+    font-size:25px;
+    vertical-align: center;
+    text-decoration: white;
+    text-align: center;
+}
+
+
+/*interattività della pagina tablet*/
+
+@media (700px<=width<=992px) {
+
+    .topbar{
+        margin-top:5vw;
+    }
+
+    body{
+        display:grid;
+        grid-template-columns: 1;
+        grid-template-rows: 5;
+    }
+
+    .links-date {
+        display: flex;
+        height: 4vw;
+        grid-column: 1;
+        grid-row: 2;
+        width:96vw;   
+        margin-top:10vw;
+        border-width: 0vw;
+        justify-content: space-evenly;
+        margin-bottom:-6vw;
+    }
+
+
+    main{
+        grid-row: 3/6;
+        grid-column: 1;
+        width:96vw;
+        margin-left:0.1vw;
+    }
+
+    .pescato{
+        height: 45vw;
+        width: 50vw;
+    }
+    .foto-profilo{
+        height:15vw;
+        width:15vw;
+    }
+}
+
+
+/*interattivita della pagina per telefono*/
+@media (width <700px) {
+    .topbar{
+        margin-top:5vw;
+    }
+
+    body{
+        display:grid;
+        grid-template-columns: 1;
+        grid-template-rows: 5;
+    }
+    
+    .links-date {
+        display: flex;
+        height: 4vw;
+        grid-column: 1;
+        grid-row: 2;
+        width:96vw;  
+        margin-bottom:2vw; 
+        border-width: 0vw;
+        justify-content: space-evenly;
+        margin-top:10vw;
+    }
+
+    main{
+        grid-row: 3/6;
+        grid-column: 1;
+        width:96vw;
+        margin-left:0.1vw;
+    }
+
+    .post{
+        margin-top:0vw;
+        grid-template-columns: 1;
+        grid-template-rows: 3;
+    }
+
+    .pescato{
+        grid-row:1;
+        margin-left:1vw; 
+        grid-column: 1;
+        height: 60vw;
+        width: 90vw;
+    }
+    .info-profilo{
+        grid-row:2;
+        grid-column: 1;
+    }
+
+    .foto-profilo{ 
+        height:15vw;
+        width:15vw;
+    }
+
+    .post-testo{
+        grid-row:3;
+        grid-column: 1;
+    }
+
+}

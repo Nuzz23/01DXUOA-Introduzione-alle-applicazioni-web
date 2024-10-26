@@ -1,0 +1,46 @@
+{% extends "header_nav.html" %}
+
+{% block title %}
+    Chi Siamo
+{% endblock %}
+
+{% block Chi_Siamo_active %}
+    active
+{% endblock %}
+
+
+{% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" name="description" content="pagina personale del fondatore di pescato" />
+    <meta name="author" content="Nunzio" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/Chi_Siamo.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="struttura">
+    <aside class="image">
+        <a href="https://www.instagram.com/nunzio03l/" class='ig' title="Instagram personale">
+            <img class="foto-profilo" src="{{ url_for('static', filename=immagine) }}" alt="foto del magnifico"/>
+        </a>
+
+        <button type="button" class="btn btn-secondary button-backwards"><<</button>
+        <button type="button" class="btn btn-secondary button-forward">>></button>
+    </aside>
+
+    <main>
+        <article class="presentazione">
+            <div class="informazioni">
+                <h1>Nunzio</h1>
+                <h2>, 20 anni</h2>
+                <h3>Studente di Ingegneria Informatica, <br>presso il
+                    <a href="https://www.polito.it/">Politecnico di Torino</a>
+                </h3>
+            </div>
+            <p class="descrizione">
+                La pesca &egrave; sempre stata una mia grande passione assieme alle macchine.<br>
+                Il pesce pi&uacute; grande di tutti deve ancora essere pescato.
+            </p>
+        </article>
+    </main>
+</div>
+{% endblock %}

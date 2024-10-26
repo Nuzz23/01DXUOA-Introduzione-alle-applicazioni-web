@@ -1,0 +1,555 @@
+body header li{
+    margin-right: 1rem;
+}
+
+.topbar{
+    position: fixed;
+    display:grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-rows: 1;
+    background-color: aqua;
+    margin-top:3vw;
+}
+
+#site-logo{
+    grid-row:1;
+    grid-column: 1;
+    width:10vw;
+    height: 6vw;
+    border-radius: 0.2vw;
+    border-color: black;
+    border-style:dashed;
+    margin-top:3vw;
+}
+
+header h1{
+    grid-row: 1;
+    grid-column: 2;
+    color: salmon;
+    margin-top:3vw;
+    align-self: center;
+}
+
+.links-header{
+    margin-top: 2vw;
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+main{
+    margin-top:7vw;
+    display:grid;
+    margin-bottom:3vw;
+}
+
+/*tag per il post*/
+.post{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1;    
+}
+
+.post-content{
+    grid-row: 1;    
+    grid-column: 1;
+    display: grid;
+    grid-template-rows:5;
+    grid-template-columns: 1;
+    margin: 2vw 1vw 3vw 1vw;
+    border: 0.1em;
+    border-style: solid;
+}
+
+/*IMMAGINE DEL POST*/
+.pescato{
+    margin-left:1vw;
+    margin-top:1vw;
+    grid-row:3;
+    grid-column: 1/4;
+    height: auto;
+    width: 62vw;
+    margin-right:1vw;
+    margin-bottom:1vw;
+}
+
+/*INFORMAZIONI SUL PROFILO*/
+.info-profilo{
+    margin-top:2vw;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    grid-template-rows: 1;
+    grid-row:1;
+    grid-column: 1/4;
+    margin-bottom:1vw;
+}
+
+.foto-profilo{
+    height:7vw;
+    width:8vw;
+    margin-left: 1.5vw;
+    grid-column: 1;
+    grid-row:1;
+    border-radius: 50%;
+    border-color: aqua;
+    border-width:0.2em;
+    border-style: groove;
+}
+
+.name{
+    grid-row:1;
+    grid-column: 2;
+    margin-top: 1.5vw;
+    margin-left:-0.5vw;
+}
+
+/*TASTI DI LIKE E COMMENTI*/
+.likes1{
+    margin-top: 1.5vw;
+    grid-row: 1;
+    grid-column: 3;
+    height:5vw;
+    width:10vw;
+    background-color: salmon;
+}
+
+.likes2{
+    display: none;
+}
+
+.comments-numb1{
+    margin-top: 1.5vw;
+    grid-row: 1;
+    grid-column: 4;
+    height:5vw;
+    width:13vw;
+    margin-right:1vw;
+    background-color:aqua;
+}
+.comments-numb2{
+    display:none;
+}
+
+/*INFORMAZIONI SUL POST*/
+.post-timestamp{
+    grid-column: 3;
+    grid-row:2;
+    text-align: end;
+    margin-right:3vw;
+}
+
+.post-location{
+    grid-row:2;
+    grid-column: 1;
+    margin-left: 1vw;
+}
+
+/*DATI PESCATO*/
+.weight{
+    grid-row:4;
+    grid-column: 2;
+}
+
+.lenght{
+    grid-row:4;
+    grid-column: 3;
+}
+
+.fish-type{
+    margin-left:2vw;
+    grid-row:4;
+    grid-column: 1;
+}
+
+/*POST TESTO*/
+.post-testo{
+    grid-row: 5;
+    grid-column: 1/4;
+    margin-left: 0.4rem;
+    text-align: justify;
+    margin-right: 1vw; 
+    margin-left: 1vw;
+}
+
+/*INTERFACCIA DEI COMMENTI: ASIDE*/
+
+.commenti{
+    display: grid;
+    grid-template-columns: 1;
+    grid-template-rows: 4;
+    grid-row:1;
+    grid-column: 2;
+    margin: 2vw 1vw 3vw 1vw;
+    border: 0.1em;
+    border-style: solid;
+}
+
+.comments-top{
+    margin-top:1vw;
+    margin-bottom:3vw;
+    justify-self: center;
+    height: 1vw;
+}
+
+/*SINGOLO COMMENTO*/
+.comment{
+    margin: 0.5vw 0.5vw 0.5vw 0.5vw;
+    border: 0.1vw;
+    border-style: solid;
+    display:grid;
+    grid-template-rows:3;
+    grid-template-columns: 1;
+    height:auto;
+}
+
+/*PARTE DI INFO DEL PROFILO*/
+.info-profilo-commento{
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-template-rows: 1;
+    grid-row:1;
+    grid-column: 1/4;
+    height:3vw;
+}
+
+.foto-profilo-commento{
+    margin-top:0.5vw;
+    height:4vw;
+    width:4vw;
+    margin-left: 1.5vw;
+    grid-column: 1;
+    grid-row:1;
+    border-radius: 50%;
+    border-color: aqua;
+    border-width:0.1em;
+    border-style: groove;
+}
+
+.name-commento{
+    grid-row:1;
+    grid-column: 2;
+    margin-top: 1vw;
+}
+
+.post-timestamp-commento{
+    grid-column: 3;
+    grid-row:1;
+    text-align: end;
+    margin-right:3vw;
+    margin-top:1vw;
+}
+
+/*TESTO DEL COMMENTO*/
+.testo-commento{
+    margin-top: 1.5vw;
+    margin-left:1.5vw;
+    margin-bottom:0.5vw;
+    grid-row:2;
+    grid-column: 1/4;
+    text-align:justify;
+}
+
+
+/*BOTTONI DEL COMMENTO*/
+.like-commento{
+    margin-top:1vw;
+    margin-left:2vw;
+    margin-bottom:1vw;
+    grid-row: 3;
+    grid-column: 1;
+    height:4vw;
+    width:8vw;
+    background-color: salmon;
+}
+
+
+.reply-commento{
+    margin-top:1vw;
+    text-decoration: underline;
+    margin-left:1vw;
+    margin-bottom:1vw;
+    grid-row: 3;
+    grid-column: 3;
+    height:4vw;
+    width:10vw;
+    margin-right:1vw;
+    background-color:aqua;
+}
+
+
+
+
+/*interattività della pagina tablet*/
+
+@media (700px<=width<=1110px) {
+
+    .topbar{
+        margin-top:5vw;
+    }
+
+    main{
+        width:96vw;
+        margin-left:0.1vw;
+    }
+
+    .pescato{
+        height: auto;
+        width: 97%;
+    }
+
+    .foto-profilo{
+        height:15vw;
+        width:15vw;
+    }
+
+    /*TASTI DI LIKE E COMMENTI*/
+    .likes1{
+        margin-top: 1.5vw;
+        grid-row: 1;
+        grid-column: 3;
+        height:10vw;
+        width:12vw;
+        background-color: salmon;
+    }
+
+    .comments-numb1{
+        margin-top: 1.5vw;
+        grid-row: 1;
+        grid-column: 4;
+        height:10vw;
+        width:13vw;
+        margin-right:0.5vw;
+        background-color:aqua;
+    }
+
+
+    /*INTERFACCIA DEI COMMENTI: ASIDE*/
+
+
+    .comments-top{
+        margin-top:1vw;
+        margin-bottom: 3vw;
+        text-align:center;
+        height: 2vw;
+    }
+
+    /*SINGOLO COMMENTO*/
+    .comment{
+        margin: 0.5vw 0.5vw 0.5vw 0.5vw;
+        height:auto;
+    }
+
+    /*PARTE DI INFO DEL PROFILO*/
+    .info-profilo-commento{
+        height:4vw;
+    }
+
+    .foto-profilo-commento{
+        height:5vw;
+        width:5vw;
+    }
+
+    .name-commento{
+        font-size: smaller;
+    }
+    .post-timestamp-commento{
+        margin-top:1.2vw;
+        font-size: smaller;
+    }
+
+    /*TESTO DEL COMMENTO*/
+    .testo-commento{ 
+        margin-top:1.5vw;
+        margin-right:0.5vw;
+    }
+
+
+    /*BOTTONI DEL COMMENTO*/
+    .like-commento{
+        margin-top:1vw;
+        margin-left:2vw;
+        margin-bottom:1vw;
+        height:10vw;
+        width:12vw;
+    }
+
+    .reply-commento{
+        margin-top:1vw;
+        margin-left:1vw;
+        margin-bottom:1vw;
+        height:10vw;
+        width:20vw;
+        margin-right:1vw;
+    }
+
+
+}
+
+
+/*interattivita della pagina per telefono*/
+@media (width <700px) {
+    .topbar{
+        margin-top:5vw;
+    }
+
+    .main{
+        margin-left:0.1vw;
+        display: grid;
+    }
+
+    .post{
+        margin-top:0vw;
+        grid-template-columns: 1;
+        grid-template-rows: 2;
+    }
+    .post-content{
+        grid-row:1;
+        grid-column: 1;
+        grid-template-columns: 1fr 2fr 1fr 1fr;
+        grid-template-rows: 5;
+    }
+
+    .pescato{
+        grid-row:1;
+        margin-left:1vw; 
+        grid-column: 1/5;
+        height: 60vw;
+        width: 90vw;
+    }
+    .info-profilo{
+        margin-top:0.5vw;
+        margin-bottom:0.5vw;
+        grid-row:2;
+        grid-column: 1/5;
+    }
+
+    .foto-profilo{ 
+        height:15vw;
+        width:15vw;
+    }
+
+    .post-testo{
+        grid-row:5;
+        grid-column: 1/5;
+    }
+
+    /*DATI PESCATO*/
+    .weight{
+        margin-top: 1vw;
+        margin-bottom:1vw;
+        grid-row:4;
+        grid-column: 3;
+        font-size:small;
+    }
+
+    .lenght{
+        margin-top: 1vw;
+        margin-bottom:1vw;
+        grid-row:4;
+        grid-column: 4;
+        font-size:small;
+    }
+
+    .fish-type{
+        margin-top: 1vw;
+        margin-bottom:1vw;
+        margin-left:2vw;
+        grid-row:4;
+        grid-column: 1/3;
+    }
+
+    .post-timestamp{
+        grid-row:3;
+        grid-column: 4;
+        font-size:smaller;
+    }
+
+    .post-location{
+        grid-row:3;
+        grid-column: 1/3;
+        font-size:smaller;
+    }
+
+    /*TASTI DI LIKE E COMMENTI*/
+    .likes1{
+        margin-top: 1.5vw;
+        grid-row: 1;
+        grid-column: 3;
+        height:10vw;
+        width:12vw;
+        background-color: salmon;
+        display: none;
+    }
+    .likes2{
+        margin-top: 1.5vw;
+        grid-row: 1;
+        grid-column: 3;
+        height:10vw;
+        width:12vw;
+        background-color: salmon;
+        display: inline;
+    }
+
+    .comments-numb1{
+        margin-top: 1.5vw;
+        grid-row: 1;
+        grid-column: 4;
+        height:10vw;
+        width:13vw;
+        margin-right:0.5vw;
+        background-color:aqua;
+        display:none;
+    }
+
+    .comments-numb2{
+        margin-top: 1.5vw;
+        grid-row: 1;
+        grid-column: 4;
+        height:10vw;
+        width:13vw;
+        margin-right:0.5vw;
+        background-color:aqua;
+        display:inline;
+    }
+
+    /*EFFETTIVI COMMENTI PRESENTI*/
+    .commenti{
+        grid-row:2;
+        grid-column: 1;
+    }
+
+    .comment{
+        height: 40vw;
+    }
+
+    .comments-top{
+        margin-bottom:5vw;
+    }
+
+    .like-commento{
+        height:10vw;
+        width: 12vw;
+        margin-top:2vw;
+        margin-bottom:2%;
+    }
+
+    .reply-commento{
+        height:10vw;
+        width: 16vw;
+        margin-top:2vw;
+        margin-bottom:2vw;
+        margin-right:2%;
+    }
+
+    .testo-commento{
+        margin-top:10%;
+        margin-bottom:2%;
+    }
+
+    .foto-profilo-commento{
+        width:10vw;
+        height:10vw;
+        margin-bottom:5vw;
+    }
+}

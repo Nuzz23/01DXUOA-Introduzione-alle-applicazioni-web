@@ -1,0 +1,69 @@
+.struttura{
+    margin-top:7vw;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows:1;
+}
+
+.image{
+    grid-row:1;
+    grid-column: 1;
+    display:grid;
+    grid-template-columns: 2;
+    grid-template-rows: 1fr 1fr;
+    margin-left:1vw;
+    width:26vw;
+}
+
+.ig{
+    grid-row:1;
+    grid-column: 1/3;
+}
+
+.foto-profilo{
+    height:auto;
+    width: 25vw;
+    border-width: 0.1vw;
+    border-style:solid;
+    border-color: black;
+}
+
+.button-forward{
+    grid-row:2;
+    grid-column: 2;
+    height:6vw;
+    width:12.5vw;
+    font-size:large;
+    margin-left:-1vw;
+}
+.button-backwards{
+    grid-row:2;
+    grid-column: 1;
+    height:6vw;
+    width:12.5vw;
+    font-size: large;
+}
+
+.presentazione{
+    grid-column:2;
+    grid-row:1;
+    display:grid;
+    grid-template-columns: 1;
+    grid-template-rows: 1fr 1fr;
+}
+
+.informazioni{
+    grid-row:1;
+    grid-column: 1;
+}
+
+h1, h2{
+    display: inline;
+    margin-bottom:1vw;
+}
+
+.descrizione{
+    margin-top:3vw;
+    grid-column: 1;
+    grid-row: 2;
+}

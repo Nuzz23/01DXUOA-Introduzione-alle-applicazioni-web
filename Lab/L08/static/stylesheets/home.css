@@ -1,0 +1,381 @@
+#everything{
+    display: grid;
+    grid-template-columns: 2;
+    grid-template-rows: 1;
+}
+
+.links-date {
+    margin-top:8vw;
+    display:grid;
+    height: 6em;
+    width: 20vw;
+    grid-column: 1;
+    grid-row: 1;  
+    margin-left:2vw;
+}
+
+main{
+    margin-top:4vw;
+    width: 83vw;
+    grid-column: 2;
+    grid-row: 1;
+    margin-left:-8vw;
+}
+
+/*tag per i post con immagini*/
+.post{
+    display: grid;
+    grid-template-rows:2;
+    grid-template-columns: 2;
+    margin: 3vw 1vw 2vw 1vw;
+    border: 0.2em;
+    border-style: solid;
+}
+
+.pescato-link{
+    grid-row:1/3;
+    grid-column: 1;
+}
+
+.pescato{
+    margin-left:2vw;
+    margin-top:2vw;
+    height: 20vw;
+    width: 24vw;
+    grid-row:1/3;
+    grid-column: 1;
+    margin-bottom:2vw;
+}
+
+.info-profilo{
+    margin-top:2vw;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 1fr;
+    grid-row:1;
+    grid-column: 2;
+}
+
+.foto-profilo{
+    height:7vw;
+    width:12vw;
+    margin-left: 1.5vw;
+    grid-row:1/3;
+    grid-column: 1;
+    border-color: blue;
+    border-width:0.2em;
+    border-style: groove;
+}
+
+.profilo-name{
+    grid-row:1;
+    grid-column: 2;
+    text-align: left;
+    margin-left:0.5vw;
+    vertical-align: center center;
+}
+
+.post-timestamp{
+    text-align: left;
+    vertical-align: top;
+    margin-right:2vw;
+    grid-row:2;
+    margin-left:0.5vw;
+    grid-column: 2;
+}
+
+.post-testo{
+    grid-row: 2;
+    grid-column: 2;
+    margin-left: 0.4rem;
+    text-align: justify;
+    margin-right: 1vw; 
+    margin-left: 1vw;
+}
+
+/*tag per i post senza immagini*/
+.post_text{
+    display: grid;
+    grid-template-rows:2;
+    grid-template-columns: 1;
+    margin: 3vw 1vw 2vw 1vw;
+    border: 0.2em;
+    border-style: solid;
+}
+
+.info-profilo_text{
+    margin-top:2vw;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-row:1;
+    grid-column: 1;
+}
+
+.foto-profilo_text{
+    height:7vw;
+    width:12vw;
+    margin-left: 1.5vw;
+    grid-row:1;
+    grid-column: 1;
+    border-color: blue;
+    border-width:0.2em;
+    border-style: groove;
+}
+
+.profilo-name_text{
+    grid-row:1;
+    grid-column: 2;
+    text-align: left;
+    margin-left:0.5vw;
+    vertical-align: center center;
+}
+
+.post-timestamp_text{
+    text-align: right;
+    vertical-align: center;
+    grid-row:1;
+    margin-left:0.5vw;
+    grid-column: 3;
+}
+
+.post-testo_text{
+    margin-top:1vw;
+    grid-row: 2;
+    grid-column: 1/4;
+    text-align: justify;
+    margin-right: 1vw; 
+    margin-left: 1vw;
+}
+
+.likes{
+    grid-row:1;
+    grid-column: 4;
+    margin-top: 1vw;
+    height:5vw;
+    width:13vw;
+    background-color: salmon;
+}
+
+.reply{
+    margin-top: 1vw;
+    grid-row: 2;
+    grid-column: 4;
+    height:5vw;
+    width:13vw;
+    margin-right:0.5vw;
+    margin-bottom:1vw;
+    background-color:aqua;
+}
+
+
+/* bottone*/
+#big-plus{
+    border:none;
+    height: 60px;
+    position: fixed;
+    right: 30px;
+    bottom:25px;
+    border-radius: 50%;
+    width:60px;
+    font-size:25px;
+    vertical-align: center;
+    text-decoration: white;
+    text-align: center;
+}
+
+/*FORM*/
+.new-post-body{
+    margin-left:1vw;
+    margin-right:1vw;
+    width:auto;
+}
+
+.form-label{
+    margin-top:1vw;
+}
+
+.richiesto{
+    color:red;
+}
+
+.modal-footer{
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 1fr;   
+}
+
+.smaller{
+    grid-row: 1;
+    grid-column: 1;
+}
+
+.submit{
+    grid-row: 1;
+    grid-column: 2;
+}
+.reset{
+    grid-row: 1;
+    grid-column: 3;
+}
+
+/*interattività della pagina tablet*/
+
+@media (700px<=width<=992px) {
+
+    #everything{
+        display:grid;
+        grid-template-columns: 1;
+        grid-template-rows: 2;
+    }
+
+    .links-date {
+        display: flex;
+        height: 4vw;
+        grid-column: 1;
+        grid-row: 1;
+        width:96vw;   
+        margin-top:9vw;
+        border-width: 0vw;
+        justify-content: space-evenly;
+        margin-bottom:-5vw;
+    }
+
+    main{
+        grid-row: 2;
+        grid-column: 1;
+        width:96vw;
+        margin-left:0.1vw;
+    }
+
+    .pescato-link{
+        grid-row:1/3;
+        grid-column: 1;
+
+    }
+
+    .pescato{
+        height: 45vw;
+        width: 50vw;
+  
+    }
+    .foto-profilo{
+        height:15vw;
+        width:15vw;
+    }
+}
+
+
+/*interattivita della pagina per telefono*/
+@media (width <700px) {
+
+    body{
+        display:grid;
+        grid-template-columns: 1;
+        grid-template-rows: 2;
+    }
+    
+    .links-date {
+        display: flex;
+        height: 4vw;
+        grid-column: 1;
+        grid-row: 1;
+        width:96vw;  
+        border-width: 0vw;
+        justify-content: space-evenly;
+        margin-top:8vw;
+    }
+
+    main{
+        grid-row: 2;
+        grid-column: 1;
+        width:96vw;
+        margin-left:0.1vw;
+    }
+
+    .post{
+        margin-top:-1vw;
+        grid-template-columns: 1;
+        grid-template-rows: 3;
+    }
+
+    .pescato, .pescato-link{
+        grid-row:1;
+        margin-left:1vw; 
+        margin-right:1vw;
+        margin-bottom:2vw;
+        grid-column: 1;
+        height: 50vw;
+        width: 90vw;
+    }
+    .info-profilo{
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-rows: 1fr;
+        margin-top:3vw;
+        grid-row:2;
+        grid-column: 1;
+    }
+
+    .foto-profilo{ 
+        grid-row: 1;
+        grid-column: 1;
+        height:15vw;
+        width:15vw;
+    }
+
+    .post-timestamp{
+        grid-row: 1;
+        grid-column: 3;
+    }
+    .profilo-name{
+        grid-row: 1;
+        grid-column: 2;
+    }
+    .post-testo{
+        margin-top:2vw;
+        grid-row:3;
+        grid-column: 1;
+    }
+
+
+
+    /*tag per i post senza immagini*/
+    .post_text{
+        display: grid;
+        grid-template-rows:3;
+        grid-template-columns: 1fr 2fr 1fr;
+    }
+
+    .info-profilo_text{
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-rows: 1fr;
+        grid-row:1;
+        grid-column: 1/4;
+    }
+    
+    .profilo-name_text{
+        grid-row:1;
+        grid-column: 2;
+    }
+
+    .post-timestamp_text{
+        grid-row:1;
+        margin-right:1vw;
+        grid-column: 3;
+    }
+
+
+    .likes{
+        grid-row:3;
+        grid-column: 1;
+        margin-left:1vw;
+        margin-bottom:1vw;
+    }
+
+    .reply{
+        grid-row: 3;
+        grid-column: 3;
+    }
+}
